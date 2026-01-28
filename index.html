@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soulvest B'day Card Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 30px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
+            max-width: 650px;
+            width: 100%;
+            padding: 50px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.35);
+            animation: float 3s ease-in-out infinite;
+            background: white;
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .header-emoji {
+            font-size: 4em;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #2d3436;
+            font-size: 2.8em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .subtitle {
+            color: #636e72;
+            font-size: 1em;
+            font-weight: 400;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            color: #2d3436;
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 15px;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            color: #2d3436;
+        }
+
+        input::placeholder, select::placeholder {
+            color: #b2bec3;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        input:hover, select:hover {
+            border-color: #764ba2;
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.3s ease;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            flex: 0.5;
+            font-size: 1em;
+            padding: 16px 12px;
+        }
+
+        .reset-button:hover {
+            box-shadow: 0 15px 35px rgba(245, 87, 108, 0.4);
+        }
+
+        .card {
+            margin-top: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #fff5e1 0%, #ffe8cc 100%);
+            border-radius: 25px;
+            border: 3px solid #667eea;
+            display: none;
+            animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+            position: relative;
+        }
+
+        .card::before {
+            content: '✨';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5em;
+        }
+
+        .card.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card-message {
+            font-size: 1.35em;
+            color: #2d3436;
+            line-height: 1.9;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            font-style: normal;
+        }
+
+        .card-decoration {
+            text-align: center;
+            font-size: 2.5em;
+            margin: 25px 0;
+            letter-spacing: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .error {
+            color: #d63031;
+            text-align: center;
+            padding: 16px;
+            background: #ffecec;
+            border-radius: 15px;
+            display: none;
+            margin-bottom: 25px;
+            border-left: 4px solid #d63031;
+            font-weight: 500;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .copy-button {
+            margin-top: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 100%;
+        }
+
+        .form-section {
+            background: rgba(102, 126, 234, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .success-feedback {
+            color: #27ae60;
+            font-size: 0.95em;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .success-feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .image-upload-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .image-upload-label {
+            display: block;
+            margin-bottom: 12px;
+            color: #2d3436;
+            font-weight: 600;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.15);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #636e72;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: #b2bec3;
+            font-size: 0.85em;
+        }
+
+        #imageInput {
+            display: none;
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            display: none;
+            position: relative;
+        }
+
+        .image-preview.show {
+            display: block;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            max-height: 200px;
+        }
+
+        .remove-image-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-image-btn:hover {
+            background: rgba(255, 0, 0, 1);
+            transform: scale(1.1);
+        }
+
+        .card-image {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .card-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            max-height: 250px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .share-btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 120px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+        }
+
+        .email-btn {
+            background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%);
+            color: white;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 600px) {
+            .share-buttons {
+                flex-direction: column;
+            }
+
+            .share-btn {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .header-emoji {
+                font-size: 3em;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .card-message {
+                font-size: 1.15em;
+                line-height: 1.7;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .reset-button {
+                flex: 1;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .card-decoration {
+                font-size: 2em;
+                letter-spacing: 10px;
+            }
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            color: #fff;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 0.9em;
+            z-index: -1;
+            backdrop-filter: blur(10px);
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #f093fb;
+        }
+
+        body {
+            padding-bottom: 80px;
+        }
+
+        @media (max-width: 500px) {
+            footer {
+                font-size: 0.8em;
+                padding: 12px 15px;
+            }
+
+            body {
+                padding-bottom: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDUwMCA1MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRDRBNTc0O3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojOEI1QTdGO3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzRBMjg2MDtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIyNTAiIGN5PSIyNTAiIHI9IjI1MCIgZmlsbD0idXJsKCNncmFkKSIvPjx0ZXh0IHg9IjI1MCIgeT0iMzAwIiBmb250LWZhbWlseT0iR2VvcmdpYSwgc2VyaWYiIGZvbnQtc2l6ZT0iNzAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjRDRBRjM3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBsZXR0ZXItc3BhY2luZz0iMyI+U09VTFZFU1Q8L3RleHQ+PC9zdmc+" alt="Soulvest Logo">
+            </div>
+            <h1>Soulvest B'day Card</h1>
+            <p style="font-size: 0.9em; color: #667eea; font-weight: 600; margin-bottom: 15px;">🤖 An AI Powered B'day Card</p>
+            <p class="subtitle">Create hilarious personalized birthday messages instantly</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+
+        <form id="birthdayForm">
+            <div class="form-section">
+                <h2>✨ Birthday Details</h2>
+                
+                <div class="form-group">
+                    <label for="name">👤 Person's Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter their name..." required>
+                    <div class="success-feedback" id="nameFeedback">✓ Name added</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">🎉 Age</label>
+                    <input type="number" id="age" name="age" placeholder="Enter their age..." min="1" max="150" required>
+                    <div class="success-feedback" id="ageFeedback">✓ Age added</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hobby">🎯 Favorite Hobby</label>
+                    <select id="hobby" name="hobby" required>
+                        <option value="">Select their hobby...</option>
+                        <optgroup label="🎮 Games & Entertainment">
+                            <option value="gaming">Video Gaming</option>
+                            <option value="movies">Watching Movies</option>
+                            <option value="music">Music & Singing</option>
+                            <option value="dancing">Dancing</option>
+                        </optgroup>
+                        <optgroup label="📚 Creative & Learning">
+                            <option value="reading">Reading Books</option>
+                            <option value="writing">Writing & Storytelling</option>
+                            <option value="art">Art & Drawing</option>
+                            <option value="photography">Photography</option>
+                        </optgroup>
+                        <optgroup label="🏃 Active & Outdoors">
+                            <option value="sports">Sports</option>
+                            <option value="fitness">Fitness & Gym</option>
+                            <option value="yoga">Yoga & Meditation</option>
+                            <option value="travel">Travel & Adventure</option>
+                            <option value="gardening">Gardening</option>
+                        </optgroup>
+                        <optgroup label="👨‍🍳 Food & Lifestyle">
+                            <option value="cooking">Cooking</option>
+                        </optgroup>
+                        <optgroup label="🎲 Other">
+                            <option value="other">Something Else</option>
+                        </optgroup>
+                    </select>
+                    <div class="success-feedback" id="hobbyFeedback">✓ Hobby selected</div>
+                </div>
+
+                <div class="image-upload-container">
+                    <label class="image-upload-label">📸 Upload a Photo (Optional)</label>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">🖼️</div>
+                        <div class="upload-text">Click to upload or drag & drop</div>
+                        <div class="upload-hint">PNG, JPG, GIF up to 5MB</div>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*">
+                    <div class="image-preview" id="imagePreview">
+                        <img id="previewImg" alt="Preview">
+                        <button type="button" class="remove-image-btn" onclick="removeImage()" title="Remove image">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">✨ Generate Birthday Message ✨</button>
+                <button type="reset" class="reset-button" title="Clear form">↺</button>
+            </div>
+        </form>
+
+        <div class="card" id="card">
+            <div class="card-decoration">🎂 ✨ 🎉</div>
+            <div class="card-image" id="cardImage"></div>
+            <div class="card-message" id="cardMessage"></div>
+            <div class="card-decoration">🎈 💝 🎊</div>
+            <div class="share-buttons">
+                <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
+                <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
+                <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
+                <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>✨ Made with 💝 by <a href="#" target="_blank">Soulvest</a> | Spreading Joy, One Birthday at a Time 🎉</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        let uploadedImage = null;
+
+        // Image upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+
+        uploadArea.addEventListener('click', () => imageInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageUpload(files[0]);
+            }
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageUpload(e.target.files[0]);
+            }
+        });
+
+        function handleImageUpload(file) {
+            // Check file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File is too large. Please choose an image under 5MB.');
+                return;
+            }
+
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please upload a valid image file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImage = e.target.result;
+                previewImg.src = uploadedImage;
+                imagePreview.classList.add('show');
+                uploadArea.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage() {
+            uploadedImage = null;
+            imageInput.value = '';
+            imagePreview.classList.remove('show');
+            uploadArea.style.display = 'block';
+        }
+
+        const messages = {
+            gaming: [
+                "Congratulations on leveling up to {age}! 🎮 You're now {age} achievements older, but still no match for my gaming skills!",
+                "Happy {age}th Birthday! You're officially in the {age}+ age bracket... in video games, this means you have {age} special attacks unlocked! ⚔️",
+                "You've successfully completed another year! Achievement unlocked: Turned {age}. Bonus: Not dead yet! 🏆"
+            ],
+            reading: [
+                "Happy {age}th Birthday, {name}! 📖 You've been aging at chapter {age} of your life's great novel. Can't wait to read the next chapter!",
+                "Congratulations on turning {age}! You're like a book that keeps getting more interesting. And unlike most books, you don't have an expiration date (yet).",
+                "{name}, you're now {age} years old. That's {age} years of plotlines, character development, and plot twists. Best story ever! 📚"
+            ],
+            cooking: [
+                "Happy {age}th Birthday, {name}! 👨‍🍳 You're aging like fine wine... or a well-marinated steak at {age} years old!",
+                "Congratulations on turning {age}! You're getting older, but at least you know how to season your life perfectly. 🧂",
+                "{name}, you're now {age} and getting spicier with age! Happy Birthday to the finest ingredient in the recipe of life! 🌶️"
+            ],
+            sports: [
+                "Happy {age}th Birthday, {name}! ⚽ You've completed {age} laps around the sun. That's like running a marathon... but without leaving Earth!",
+                "Congratulations on turning {age}! You're now officially in your prime athletic years... to go professional in sitting on the couch. 🛋️",
+                "{name}, at {age} years old, you're still a champion in our hearts. Even if you're more of a cheerleader these days! 🏆"
+            ],
+            music: [
+                "Happy {age}th Birthday, {name}! 🎵 You're now {age} years old - that's {age} years of questionable music taste and we still love you!",
+                "Congratulations on turning {age}! Your life is a beautiful symphony, and you're conducting it like the maestro you are. 🎼",
+                "{name}, you're now {age}! That's {age} years of hitting the right notes (and missing some too, but we won't judge)! 🎤"
+            ],
+            art: [
+                "Happy {age}th Birthday, {name}! 🎨 You're a masterpiece at {age} years old - slightly aged, but still appreciated!",
+                "Congratulations on turning {age}! Your life is a work of art, and at {age}, you're definitely in the 'vintage' category now. 🖼️",
+                "{name}, you're {age} and absolutely breathtaking! Happy Birthday to our favorite canvas of memories! 🌈"
+            ],
+            travel: [
+                "Happy {age}th Birthday, {name}! ✈️ You've traveled {age} years around the sun. Next stop: {age}+1!",
+                "Congratulations on turning {age}! You're now another year older and hopefully {age} times wiser. Or at least {age} times more lost! 🗺️",
+                "{name}, at {age} years old, you're on the world's best journey. Thanks for letting us be your travel companions! 🌍"
+            ],
+            gardening: [
+                "Happy {age}th Birthday, {name}! 🌱 You've been growing beautifully for {age} years. Here's to planting more seeds of wisdom!",
+                "Congratulations on turning {age}! Like a well-maintained garden, you're aging gracefully - just with a few more weeds. 🌻",
+                "{name}, you're now {age}! That's {age} years of blooming, growing, and occasionally being a little thorny. We love it! 🌹"
+            ],
+            photography: [
+                "Happy {age}th Birthday, {name}! 📷 You're {age} years old and still the most beautiful frame in our collection!",
+                "Congratulations on turning {age}! Life is like photography - you develop it in the dark. You've had {age} very dark years, apparently! 📸",
+                "{name}, at {age} years old, you're officially vintage film material. Happy Birthday to our favorite subject! 🎬"
+            ],
+            fitness: [
+                "Happy {age}th Birthday, {name}! 💪 You've completed {age} years of the ultimate fitness challenge: staying alive!",
+                "Congratulations on turning {age}! Your body might be getting older, but your spirit is still crushing it like a personal trainer! 🏋️",
+                "{name}, you're {age} and still crushing goals. Happy Birthday to the strongest one in the friend group! 🥇"
+            ],
+            movies: [
+                "Happy {age}th Birthday, {name}! 🎬 Your life is a blockbuster film, and at {age} chapters in, it's still a page-turner!",
+                "Congratulations on turning {age}! You're like a classic movie - timeless, entertaining, and somehow still relevant after all these years. 🍿",
+                "{name}, you're {age} years old! That's like {age} movies worth of life experience. This year's the director's cut! 🎥"
+            ],
+            yoga: [
+                "Happy {age}th Birthday, {name}! 🧘 At {age}, you're achieving perfect balance between aging and staying fabulous!",
+                "Congratulations on turning {age}! Your inner peace is showing, but so is your birth certificate. Still beautiful though! ☮️",
+                "{name}, you're {age} and your chakras are definitely aligned for another amazing year. Namaste! 🙏"
+            ],
+            dancing: [
+                "Happy {age}th Birthday, {name}! 💃 You've danced through {age} years of life. Still got the moves!",
+                "Congratulations on turning {age}! You're grooving into this next year like you own the dance floor! 🕺",
+                "{name}, at {age} years old, you're still the life of the party. Let's keep dancing through the decades! 🎉"
+            ],
+            writing: [
+                "Happy {age}th Birthday, {name}! ✍️ You've written {age} chapters of your amazing story. Can't wait for the next one!",
+                "Congratulations on turning {age}! Your autobiography is getting thick, but the best chapters are still to come! 📖",
+                "{name}, you're {age} and still writing the best parts of your story. Happy Birthday to our favorite author! 🖊️"
+            ],
+            other: [
+                "Happy {age}th Birthday, {name}! 🎊 You're {age} years old and absolutely crushing it!",
+                "Congratulations on turning {age}! Another year older, another year wiser, another year of being awesome! 🌟",
+                "{name}, you're {age} and you're the best! Happy Birthday to the coolest person we know! 🎈"
+            ]
+        };
+
+        // Add visual feedback on input
+        document.getElementById('name').addEventListener('input', function() {
+            document.getElementById('nameFeedback').classList.toggle('show', this.value.trim().length > 0);
+        });
+
+        document.getElementById('age').addEventListener('input', function() {
+            document.getElementById('ageFeedback').classList.toggle('show', this.value.trim().length > 0);
+        });
+
+        document.getElementById('hobby').addEventListener('change', function() {
+            document.getElementById('hobbyFeedback').classList.toggle('show', this.value.length > 0);
+        });
+
+        document.getElementById('birthdayForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generateCard();
+        });
+
+        function generateCard() {
+            const name = document.getElementById('name').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const hobby = document.getElementById('hobby').value;
+            const errorDiv = document.getElementById('error');
+
+            // Validation
+            if (!name || !age || !hobby) {
+                errorDiv.textContent = '⚠️ Please fill in all fields!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (age < 1 || age > 150) {
+                errorDiv.textContent = '⚠️ Please enter a valid age (1-150)!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            errorDiv.classList.remove('show');
+
+            // Get messages for the hobby
+            const hobbyMessages = messages[hobby] || messages.other;
+            const randomMessage = hobbyMessages[Math.floor(Math.random() * hobbyMessages.length)];
+
+            // Replace placeholders
+            let finalMessage = randomMessage
+                .replace(/{name}/g, name)
+                .replace(/{age}/g, age);
+
+            // Display the card
+            document.getElementById('cardMessage').textContent = finalMessage;
+            
+            // Display uploaded image on card if available
+            const cardImageDiv = document.getElementById('cardImage');
+            if (uploadedImage) {
+                cardImageDiv.innerHTML = `<img src="${uploadedImage}" alt="Birthday photo">`;
+            } else {
+                cardImageDiv.innerHTML = '';
+            }
+            
+            document.getElementById('card').classList.add('show');
+            
+            // Scroll to card
+            setTimeout(() => {
+                document.getElementById('card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function copyToClipboard() {
+            const message = document.getElementById('cardMessage').textContent;
+            navigator.clipboard.writeText(message).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = message;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        async function downloadCard() {
+            const card = document.getElementById('card');
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Generating...';
+            button.disabled = true;
+
+            try {
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#fff',
+                    scale: 2,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                });
+
+                const link = document.createElement('a');
+                const personName = document.getElementById('name').value || 'birthday';
+                link.href = canvas.toDataURL('image/png');
+                link.download = `Soulvest-Birthday-Card-${personName}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                button.textContent = '✅ Downloaded!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert('Error downloading card. Please try again.');
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function shareWhatsApp() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            
+            // For WhatsApp Web
+            const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function shareEmail() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            
+            const subject = encodeURIComponent(`🎉 Happy Birthday ${personName}!`);
+            const body = encodeURIComponent(`Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂`);
+            
+            window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+        }
+    </script>
+</body>
+</html>

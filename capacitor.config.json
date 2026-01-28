@@ -1,0 +1,11 @@
+{
+  "appId": "com.soulvest.bdaycard",
+  "appName": "Soulvest B'day Card Generator",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
