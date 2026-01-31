@@ -984,7 +984,6 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.0/lame.min.js"></script>
     <script>
         let uploadedImage = null;
 
@@ -1092,7 +1091,7 @@
                     listeningIndicator.classList.add('show');
                 } catch (error) {
                     console.error('Speech recognition error:', error);
-                    showError('Could not start voice recognition. Please try again.');
+                    showNotification('Could not start voice recognition. Please try again.', 'error');
                 }
             });
             
@@ -1135,7 +1134,7 @@
                     default:
                         errorMessage += 'Please try again.';
                 }
-                showError(errorMessage);
+                showNotification(errorMessage, 'error');
             };
         } else {
             // Hide mic button if not supported
@@ -1178,9 +1177,9 @@
             if (englishVoices.length > 0) {
                 const engGroup = document.createElement('optgroup');
                 engGroup.label = 'English Voices';
-                englishVoices.forEach((voice, index) => {
+                englishVoices.forEach((voice) => {
                     const option = document.createElement('option');
-                    option.value = index;
+                    option.value = availableVoices.indexOf(voice);
                     option.textContent = `${voice.name} (${voice.lang})`;
                     engGroup.appendChild(option);
                 });
@@ -1194,7 +1193,7 @@
                 availableVoices.forEach((voice, index) => {
                     if (!voice.lang.startsWith('en')) {
                         const option = document.createElement('option');
-                        option.value = availableVoices.indexOf(voice);
+                        option.value = index;
                         option.textContent = `${voice.name} (${voice.lang})`;
                         otherGroup.appendChild(option);
                     }
@@ -1237,7 +1236,7 @@
             const message = document.getElementById('cardMessage').textContent;
             
             if (!message) {
-                showError('No message to read. Please generate a card first.');
+                showNotification('No message to read. Please generate a card first.', 'error');
                 return;
             }
             
@@ -1280,7 +1279,7 @@
             
             currentUtterance.onerror = function(event) {
                 console.error('Speech synthesis error:', event);
-                showError('Error playing audio. Please try again.');
+                showNotification('Error playing audio. Please try again.', 'error');
                 readAloudBtn.disabled = false;
                 pauseBtn.disabled = true;
                 stopBtn.disabled = true;
@@ -1322,61 +1321,23 @@
         // Download Audio functionality
         const downloadAudioBtn = document.getElementById('downloadAudioBtn');
         
-        downloadAudioBtn.addEventListener('click', async function() {
+        downloadAudioBtn.addEventListener('click', function() {
             const message = document.getElementById('cardMessage').textContent;
-            const personName = document.getElementById('name').value || 'birthday';
             
             if (!message) {
-                showError('No message to convert. Please generate a card first.');
+                showNotification('No message to convert. Please generate a card first.', 'error');
                 return;
             }
             
-            const button = this;
-            const originalText = button.textContent;
-            button.textContent = '⏳ Generating...';
-            button.disabled = true;
-            
-            try {
-                // Create utterance
-                const utterance = new SpeechSynthesisUtterance(message);
-                
-                // Set voice
-                const selectedVoiceIndex = voiceSelect.value;
-                if (selectedVoiceIndex && availableVoices[selectedVoiceIndex]) {
-                    utterance.voice = availableVoices[selectedVoiceIndex];
-                }
-                
-                // Set speed
-                utterance.rate = parseFloat(speedControl.value);
-                
-                // Use MediaRecorder to capture audio
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    // Fallback: Just speak and inform user
-                    speechSynthesis.speak(utterance);
-                    showError('Audio download not fully supported in this browser. The message will be played instead.');
-                    button.textContent = originalText;
-                    button.disabled = false;
-                    return;
-                }
-                
-                // Alternative approach: use Web Audio API with speech synthesis
-                // Since direct recording of speech synthesis is complex, we'll inform the user
-                showError('Direct audio download is not fully supported. Please use screen recording or a browser extension to capture audio.');
-                
-                button.textContent = originalText;
-                button.disabled = false;
-                
-            } catch (error) {
-                console.error('Error downloading audio:', error);
-                showError('Error generating audio file. Please try again.');
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+            // Browser limitation: Direct audio download of speech synthesis is not supported
+            // Inform the user about alternatives
+            showNotification('Audio download of synthesized speech is not supported in browsers. You can use the "Read Aloud" button to hear the message, or use screen recording software to capture the audio.', 'info');
         });
 
-        function showError(message) {
+        function showNotification(message, type = 'error') {
             const errorDiv = document.getElementById('error');
-            errorDiv.textContent = '⚠️ ' + message;
+            const icon = type === 'error' ? '⚠️' : 'ℹ️';
+            errorDiv.textContent = `${icon} ${message}`;
             errorDiv.classList.add('show');
             
             setTimeout(() => {
