@@ -491,6 +491,238 @@
             transform: translateY(0);
         }
 
+        /* Music Player Styles */
+        .music-player {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .music-icon {
+            font-size: 1.5em;
+            animation: bounce 2s infinite;
+        }
+
+        .music-selector {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .music-selector label {
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 0.95em;
+        }
+
+        .music-selector select {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95em;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .music-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .music-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .mute-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #764ba2 100%);
+            box-shadow: 0 5px 15px rgba(240, 147, 251, 0.3);
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .music-btn:active {
+            transform: scale(0.95);
+        }
+
+        .progress-container {
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 10px;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .volume-container label {
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 0.9em;
+            min-width: 80px;
+        }
+
+        #volumeSlider {
+            flex: 1;
+            min-width: 150px;
+            height: 6px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        #volumeSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #volumeSlider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #volumeValue {
+            font-weight: 600;
+            color: #667eea;
+            min-width: 45px;
+            font-size: 0.9em;
+        }
+
+        .music-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.95em;
+            color: #2d3436;
+            font-weight: 500;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .download-video-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .music-player {
+                padding: 15px;
+            }
+
+            .music-selector,
+            .volume-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .music-selector select,
+            #volumeSlider {
+                width: 100%;
+            }
+
+            .music-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1em;
+            }
+        }
+
         @media (max-width: 600px) {
             .share-buttons {
                 flex-direction: column;
@@ -683,9 +915,63 @@
             <div class="card-image" id="cardImage"></div>
             <div class="card-message" id="cardMessage"></div>
             <div class="card-decoration">🎈 💝 🎊</div>
+            
+            <!-- Music Player Section -->
+            <div class="music-player" id="musicPlayer">
+                <div class="music-header">
+                    <span class="music-icon">🎵</span>
+                    <span class="music-title">Happy Birthday Music</span>
+                </div>
+                
+                <div class="music-selector">
+                    <label for="musicVersion">🎼 Select Version:</label>
+                    <select id="musicVersion" onchange="changeMusicVersion()">
+                        <option value="classic">Classic Instrumental</option>
+                        <option value="jazz">Jazz Version</option>
+                        <option value="piano">Piano Version</option>
+                    </select>
+                </div>
+                
+                <div class="music-controls">
+                    <button class="music-btn play-btn" id="playPauseBtn" onclick="togglePlayPause()">
+                        <span id="playIcon">▶️</span>
+                    </button>
+                    <button class="music-btn mute-btn" id="muteBtn" onclick="toggleMute()">
+                        <span id="muteIcon">🔊</span>
+                    </button>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+                    </div>
+                </div>
+                
+                <div class="volume-container">
+                    <label for="volumeSlider">🔊 Volume:</label>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
+                    <span id="volumeValue">50%</span>
+                </div>
+                
+                <div class="music-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="includeMusicCheckbox" checked>
+                        <span>☑️ Include music when sharing</span>
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="loopMusicCheckbox">
+                        <span>🔁 Loop music</span>
+                    </label>
+                </div>
+            </div>
+            
             <div class="share-buttons">
                 <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
+                <button type="button" class="share-btn download-video-btn" onclick="downloadCardWithMusic()">🎬 Download with Music</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
             </div>
@@ -699,6 +985,161 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         let uploadedImage = null;
+
+        // Music Player Variables
+        let musicAudio = null;
+        let isPlaying = false;
+        let isMuted = false;
+        let audioContext = null;
+        let audioSource = null;
+        const musicVersions = {
+            classic: 'audio/happy-birthday-classic.mp3',
+            jazz: 'audio/happy-birthday-jazz.mp3',
+            piano: 'audio/happy-birthday-piano.mp3'
+        };
+
+        // Initialize music player
+        function initMusicPlayer() {
+            musicAudio = new Audio(musicVersions.classic);
+            musicAudio.volume = 0.5;
+            
+            // Update progress bar
+            musicAudio.addEventListener('timeupdate', updateProgress);
+            
+            // Update total time when metadata loads
+            musicAudio.addEventListener('loadedmetadata', () => {
+                document.getElementById('totalTime').textContent = formatTime(musicAudio.duration);
+            });
+            
+            // Handle audio end
+            musicAudio.addEventListener('ended', () => {
+                const loopCheckbox = document.getElementById('loopMusicCheckbox');
+                if (loopCheckbox.checked) {
+                    musicAudio.currentTime = 0;
+                    musicAudio.play();
+                } else {
+                    isPlaying = false;
+                    document.getElementById('playIcon').textContent = '▶️';
+                }
+            });
+
+            // Handle audio errors
+            musicAudio.addEventListener('error', (e) => {
+                console.warn('Audio file not found. Music player will be in demo mode.');
+                // Show a friendly message to user
+                showMusicError();
+            });
+        }
+
+        function showMusicError() {
+            const musicPlayer = document.getElementById('musicPlayer');
+            const errorMsg = document.createElement('div');
+            errorMsg.style.cssText = 'background: rgba(255, 200, 0, 0.2); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9em; color: #856404;';
+            errorMsg.innerHTML = '⚠️ Music files not yet configured. See <code>audio/README.md</code> for instructions.';
+            musicPlayer.insertBefore(errorMsg, musicPlayer.firstChild);
+        }
+
+        function togglePlayPause() {
+            if (!musicAudio) {
+                initMusicPlayer();
+            }
+
+            if (isPlaying) {
+                musicAudio.pause();
+                document.getElementById('playIcon').textContent = '▶️';
+                isPlaying = false;
+            } else {
+                musicAudio.play().catch(err => {
+                    console.error('Error playing audio:', err);
+                });
+                document.getElementById('playIcon').textContent = '⏸️';
+                isPlaying = true;
+            }
+        }
+
+        function toggleMute() {
+            if (!musicAudio) {
+                initMusicPlayer();
+            }
+
+            isMuted = !isMuted;
+            musicAudio.muted = isMuted;
+            document.getElementById('muteIcon').textContent = isMuted ? '🔇' : '🔊';
+        }
+
+        function changeVolume(value) {
+            if (!musicAudio) {
+                initMusicPlayer();
+            }
+
+            musicAudio.volume = value / 100;
+            document.getElementById('volumeValue').textContent = value + '%';
+            
+            // Update mute icon if volume is 0
+            if (value === '0') {
+                document.getElementById('muteIcon').textContent = '🔇';
+            } else if (isMuted) {
+                isMuted = false;
+                musicAudio.muted = false;
+                document.getElementById('muteIcon').textContent = '🔊';
+            }
+        }
+
+        function changeMusicVersion() {
+            const version = document.getElementById('musicVersion').value;
+            const wasPlaying = isPlaying;
+            
+            if (musicAudio) {
+                musicAudio.pause();
+                musicAudio.src = musicVersions[version];
+                
+                if (wasPlaying) {
+                    musicAudio.play().catch(err => console.error('Error playing audio:', err));
+                }
+            } else {
+                initMusicPlayer();
+                musicAudio.src = musicVersions[version];
+            }
+        }
+
+        function updateProgress() {
+            if (!musicAudio) return;
+            
+            const progress = (musicAudio.currentTime / musicAudio.duration) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentTime').textContent = formatTime(musicAudio.currentTime);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Click on progress bar to seek
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.addEventListener('click', (e) => {
+                    if (!musicAudio) return;
+                    
+                    const rect = progressBar.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    musicAudio.currentTime = percent * musicAudio.duration;
+                });
+            }
+
+            // Handle loop checkbox
+            const loopCheckbox = document.getElementById('loopMusicCheckbox');
+            if (loopCheckbox) {
+                loopCheckbox.addEventListener('change', (e) => {
+                    if (musicAudio) {
+                        musicAudio.loop = e.target.checked;
+                    }
+                });
+            }
+        });
 
         // Image upload handling
         const uploadArea = document.getElementById('uploadArea');
@@ -987,6 +1428,197 @@
             const body = encodeURIComponent(`Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂`);
             
             window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+        }
+
+        async function downloadCardWithMusic() {
+            const button = event.target;
+            const originalText = button.textContent;
+            const includeMusicCheckbox = document.getElementById('includeMusicCheckbox');
+            
+            if (!includeMusicCheckbox.checked) {
+                alert('Please check "Include music when sharing" to download with music.');
+                return;
+            }
+
+            button.textContent = '⏳ Generating Video...';
+            button.disabled = true;
+
+            try {
+                // Check if audio files exist
+                if (!musicAudio || musicAudio.error) {
+                    alert('⚠️ Music files are not configured yet.\n\nPlease add audio files to the /audio/ folder.\nSee audio/README.md for instructions.\n\nFor now, downloading card as image instead.');
+                    await downloadCard();
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                // For now, we'll use MediaRecorder API to create a simple video
+                // This is a basic implementation that records the card with audio
+                await createVideoWithMusic(button, originalText);
+                
+            } catch (error) {
+                console.error('Error generating video:', error);
+                alert('Error creating video with music. Downloading card as image instead.');
+                await downloadCard();
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function createVideoWithMusic(button, originalText) {
+            const card = document.getElementById('card');
+            
+            try {
+                // First, capture the card as an image
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#fff',
+                    scale: 2,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                });
+
+                // Create a video canvas
+                const videoCanvas = document.createElement('canvas');
+                videoCanvas.width = canvas.width;
+                videoCanvas.height = canvas.height;
+                const ctx = videoCanvas.getContext('2d');
+
+                // Check if MediaRecorder is supported
+                if (!('MediaRecorder' in window)) {
+                    throw new Error('MediaRecorder not supported');
+                }
+
+                // Create a stream from the canvas
+                const canvasStream = videoCanvas.captureStream(30); // 30 fps
+
+                // Get audio stream if music is available
+                let audioStream = null;
+                if (musicAudio && !musicAudio.error) {
+                    // Create audio context to capture audio (only once)
+                    if (!audioContext) {
+                        audioContext = new AudioContext();
+                    }
+                    
+                    // Only create source if not already created
+                    if (!audioSource) {
+                        audioSource = audioContext.createMediaElementSource(musicAudio);
+                    }
+                    
+                    const destination = audioContext.createMediaStreamDestination();
+                    audioSource.connect(destination);
+                    audioSource.connect(audioContext.destination);
+                    audioStream = destination.stream;
+                }
+
+                // Combine canvas and audio streams
+                let combinedStream;
+                if (audioStream) {
+                    combinedStream = new MediaStream([
+                        ...canvasStream.getVideoTracks(),
+                        ...audioStream.getAudioTracks()
+                    ]);
+                } else {
+                    combinedStream = canvasStream;
+                }
+
+                // Check MediaRecorder support and select appropriate mimeType
+                let mimeType = 'video/webm';
+                if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+                    mimeType = 'video/webm;codecs=vp9,opus';
+                } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+                    mimeType = 'video/webm;codecs=vp8,opus';
+                }
+
+                // Setup MediaRecorder
+                const chunks = [];
+                const mediaRecorder = new MediaRecorder(combinedStream, { mimeType });
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        chunks.push(e.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    const personName = document.getElementById('name').value || 'birthday';
+                    link.href = url;
+                    link.download = `Soulvest-Birthday-Card-${personName}-with-music.webm`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    button.textContent = '✅ Video Downloaded!';
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.disabled = false;
+                    }, 2000);
+                };
+
+                // Draw the card image on canvas for the duration
+                let frameCount = 0;
+                // Calculate duration based on audio length, default to 10 seconds
+                const audioDuration = (musicAudio && !musicAudio.error && musicAudio.duration) 
+                    ? musicAudio.duration 
+                    : 10;
+                const maxFrames = Math.floor(audioDuration * 30); // 30 fps
+                
+                const drawFrame = () => {
+                    ctx.drawImage(canvas, 0, 0);
+                    frameCount++;
+                    
+                    if (frameCount < maxFrames) {
+                        requestAnimationFrame(drawFrame);
+                    } else {
+                        mediaRecorder.stop();
+                    }
+                };
+
+                // Start recording
+                mediaRecorder.start();
+                
+                // Restart music if not playing
+                if (musicAudio && musicAudio.paused) {
+                    musicAudio.currentTime = 0;
+                    await musicAudio.play();
+                }
+
+                // Start drawing frames
+                drawFrame();
+
+            } catch (error) {
+                console.error('Video creation error:', error);
+                
+                // Fallback: Just download the image with a note about adding music manually
+                alert('⚠️ Video creation not fully supported in this browser.\n\nDownloading card as image instead.\nYou can add music manually using video editing software.');
+                
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#fff',
+                    scale: 2,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                });
+
+                const link = document.createElement('a');
+                const personName = document.getElementById('name').value || 'birthday';
+                link.href = canvas.toDataURL('image/png');
+                link.download = `Soulvest-Birthday-Card-${personName}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                button.textContent = '✅ Downloaded Image';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }
         }
     </script>
 </body>
