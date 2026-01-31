@@ -1165,16 +1165,25 @@
             }
             
             // Filter and organize voices
-            const englishVoices = availableVoices.filter(voice => voice.lang.startsWith('en'));
-            const otherVoices = availableVoices.filter(voice => !voice.lang.startsWith('en'));
+            // Group voices by language for better organization
+            const englishVoices = [];
+            const otherVoices = [];
+            
+            availableVoices.forEach((voice, index) => {
+                if (voice.lang.startsWith('en')) {
+                    englishVoices.push({voice, index});
+                } else {
+                    otherVoices.push({voice, index});
+                }
+            });
             
             // Add English voices first
             if (englishVoices.length > 0) {
                 const engGroup = document.createElement('optgroup');
                 engGroup.label = 'English Voices';
-                englishVoices.forEach((voice) => {
+                englishVoices.forEach(({voice, index}) => {
                     const option = document.createElement('option');
-                    option.value = availableVoices.indexOf(voice);
+                    option.value = index;
                     option.textContent = `${voice.name} (${voice.lang})`;
                     engGroup.appendChild(option);
                 });
@@ -1185,9 +1194,9 @@
             if (otherVoices.length > 0) {
                 const otherGroup = document.createElement('optgroup');
                 otherGroup.label = 'Other Voices';
-                otherVoices.forEach((voice) => {
+                otherVoices.forEach(({voice, index}) => {
                     const option = document.createElement('option');
-                    option.value = availableVoices.indexOf(voice);
+                    option.value = index;
                     option.textContent = `${voice.name} (${voice.lang})`;
                     otherGroup.appendChild(option);
                 });
@@ -1198,7 +1207,7 @@
             const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
             const savedSpeed = localStorage.getItem('ttsSpeed');
             
-            if (savedVoiceIndex !== null && savedVoiceIndex < availableVoices.length) {
+            if (savedVoiceIndex !== null && savedVoiceIndex !== '' && parseInt(savedVoiceIndex) < availableVoices.length) {
                 voiceSelect.value = savedVoiceIndex;
             }
             
@@ -1242,7 +1251,7 @@
             
             // Set voice
             const selectedVoiceIndex = voiceSelect.value;
-            if (selectedVoiceIndex && availableVoices[selectedVoiceIndex]) {
+            if (selectedVoiceIndex !== '' && selectedVoiceIndex !== null && availableVoices[selectedVoiceIndex]) {
                 currentUtterance.voice = availableVoices[selectedVoiceIndex];
             }
             
