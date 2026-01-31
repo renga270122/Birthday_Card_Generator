@@ -1164,42 +1164,34 @@
                 return;
             }
             
-            // Filter and organize voices
-            // Group voices by language for better organization
-            const englishVoices = [];
-            const otherVoices = [];
+            // Organize voices by language in a single pass
+            const engGroup = document.createElement('optgroup');
+            engGroup.label = 'English Voices';
+            const otherGroup = document.createElement('optgroup');
+            otherGroup.label = 'Other Voices';
+            
+            let hasEnglish = false;
+            let hasOther = false;
             
             availableVoices.forEach((voice, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                
                 if (voice.lang.startsWith('en')) {
-                    englishVoices.push({voice, index});
+                    engGroup.appendChild(option);
+                    hasEnglish = true;
                 } else {
-                    otherVoices.push({voice, index});
+                    otherGroup.appendChild(option);
+                    hasOther = true;
                 }
             });
             
-            // Add English voices first
-            if (englishVoices.length > 0) {
-                const engGroup = document.createElement('optgroup');
-                engGroup.label = 'English Voices';
-                englishVoices.forEach(({voice, index}) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = `${voice.name} (${voice.lang})`;
-                    engGroup.appendChild(option);
-                });
+            // Add groups to select (English first, then others)
+            if (hasEnglish) {
                 voiceSelect.appendChild(engGroup);
             }
-            
-            // Add other voices
-            if (otherVoices.length > 0) {
-                const otherGroup = document.createElement('optgroup');
-                otherGroup.label = 'Other Voices';
-                otherVoices.forEach(({voice, index}) => {
-                    const option = document.createElement('option');
-                    option.value = index;
-                    option.textContent = `${voice.name} (${voice.lang})`;
-                    otherGroup.appendChild(option);
-                });
+            if (hasOther) {
                 voiceSelect.appendChild(otherGroup);
             }
             
@@ -1207,8 +1199,11 @@
             const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
             const savedSpeed = localStorage.getItem('ttsSpeed');
             
-            if (savedVoiceIndex !== null && savedVoiceIndex !== '' && parseInt(savedVoiceIndex) < availableVoices.length) {
-                voiceSelect.value = savedVoiceIndex;
+            if (savedVoiceIndex !== null && savedVoiceIndex !== '' && !isNaN(savedVoiceIndex)) {
+                const voiceIndex = parseInt(savedVoiceIndex);
+                if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
+                    voiceSelect.value = savedVoiceIndex;
+                }
             }
             
             if (savedSpeed) {
@@ -1251,8 +1246,11 @@
             
             // Set voice
             const selectedVoiceIndex = voiceSelect.value;
-            if (selectedVoiceIndex !== '' && selectedVoiceIndex !== null && availableVoices[selectedVoiceIndex]) {
-                currentUtterance.voice = availableVoices[selectedVoiceIndex];
+            if (selectedVoiceIndex !== '' && selectedVoiceIndex !== null && !isNaN(selectedVoiceIndex)) {
+                const voiceIndex = parseInt(selectedVoiceIndex);
+                if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
+                    currentUtterance.voice = availableVoices[voiceIndex];
+                }
             }
             
             // Set speed
