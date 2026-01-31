@@ -1505,17 +1505,27 @@
                 setTimeout(() => {
                     targetButton.textContent = originalText;
                 }, 2000);
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = message;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                targetButton.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    targetButton.textContent = originalText;
-                }, 2000);
+            }).catch((err) => {
+                // Fallback for older browsers using deprecated API
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = message;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (success) {
+                        targetButton.textContent = '✅ Copied!';
+                        setTimeout(() => {
+                            targetButton.textContent = originalText;
+                        }, 2000);
+                    } else {
+                        alert('Unable to copy message. Please copy manually.');
+                    }
+                } catch (fallbackErr) {
+                    alert('Unable to copy message. Please copy manually.');
+                }
             });
         }
 
@@ -1533,7 +1543,7 @@
                     logging: false,
                     allowTaint: true,
                     useCORS: true,
-                    imageTimeout: 15000, // 15 seconds - allows time for images to load; throws error if exceeded
+                    imageTimeout: 15000, // 15 seconds - images that fail to load within this timeout will be skipped
                     windowWidth: cardContent.scrollWidth,
                     windowHeight: cardContent.scrollHeight
                 });
@@ -1578,18 +1588,27 @@
                 setTimeout(() => {
                     targetButton.textContent = originalText;
                 }, 2000);
-            }).catch(() => {
-                // Fallback for older browsers
-                const textarea = document.createElement('textarea');
-                textarea.value = appURL;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                targetButton.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    targetButton.textContent = originalText;
-                }, 2000);
+            }).catch((err) => {
+                // Fallback for older browsers using deprecated API
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = appURL;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (success) {
+                        targetButton.textContent = '✅ Copied!';
+                        setTimeout(() => {
+                            targetButton.textContent = originalText;
+                        }, 2000);
+                    } else {
+                        alert('Unable to copy URL. Please copy manually: ' + appURL);
+                    }
+                } catch (fallbackErr) {
+                    alert('Unable to copy URL. Please copy manually: ' + appURL);
+                }
             });
         }
 
