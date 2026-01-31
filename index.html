@@ -624,10 +624,6 @@
             background: linear-gradient(135deg, #f5576c 0%, #e74c3c 100%);
         }
 
-        .audio-btn.download-audio-btn {
-            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
-        }
-
         .audio-settings {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -944,7 +940,6 @@
                     <button type="button" class="audio-btn" id="readAloudBtn">🔊 Read Aloud</button>
                     <button type="button" class="audio-btn pause-btn" id="pauseBtn" disabled>⏸️ Pause</button>
                     <button type="button" class="audio-btn stop-btn" id="stopBtn" disabled>⏹️ Stop</button>
-                    <button type="button" class="audio-btn download-audio-btn" id="downloadAudioBtn">⬇️ Download Audio</button>
                 </div>
                 
                 <div class="audio-settings">
@@ -1203,7 +1198,7 @@
             const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
             const savedSpeed = localStorage.getItem('ttsSpeed');
             
-            if (savedVoiceIndex && savedVoiceIndex < availableVoices.length) {
+            if (savedVoiceIndex !== null && savedVoiceIndex < availableVoices.length) {
                 voiceSelect.value = savedVoiceIndex;
             }
             
@@ -1314,21 +1309,6 @@
             isPaused = false;
             readAloudBtn.textContent = '🔊 Read Aloud';
             pauseBtn.textContent = '⏸️ Pause';
-        });
-
-        // Download Audio functionality
-        const downloadAudioBtn = document.getElementById('downloadAudioBtn');
-        
-        downloadAudioBtn.addEventListener('click', function() {
-            const message = document.getElementById('cardMessage').textContent;
-            
-            if (!message) {
-                showNotification('No message to convert. Please generate a card first.', 'error');
-                return;
-            }
-            
-            // Browser limitation: Direct audio download of speech synthesis is not supported
-            showNotification('Direct audio download is not supported by browsers. Please use the Read Aloud feature to listen.', 'info');
         });
 
         function showNotification(message, type = 'error') {
