@@ -698,8 +698,8 @@
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
-                <button type="button" class="share-btn instagram-btn" onclick="shareInstagram()">📷 Instagram</button>
-                <button type="button" class="share-btn facebook-btn" onclick="shareFacebook()">👍 Facebook</button>
+                <button type="button" class="share-btn instagram-btn" onclick="shareInstagram()" aria-label="Share on Instagram">📷 Instagram</button>
+                <button type="button" class="share-btn facebook-btn" onclick="shareFacebook()" aria-label="Share on Facebook">👍 Facebook</button>
             </div>
         </div>
     </div>
@@ -715,6 +715,11 @@
         const SHARE_IMAGE_SCALE = 2;    // Balanced quality/performance for sharing
         
         let uploadedImage = null;
+
+        // Helper function to sanitize filename
+        function sanitizeFilename(filename) {
+            return filename.replace(/[^a-z0-9-_]/gi, '-').replace(/-+/g, '-').substring(0, 50);
+        }
 
         // Image upload handling
         const uploadArea = document.getElementById('uploadArea');
@@ -967,8 +972,9 @@
 
                 const link = document.createElement('a');
                 const personName = document.getElementById('name').value || 'birthday';
+                const safeName = sanitizeFilename(personName);
                 link.href = canvas.toDataURL('image/png');
-                link.download = `Soulvest-Birthday-Card-${personName}.png`;
+                link.download = `Soulvest-Birthday-Card-${safeName}.png`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1003,7 +1009,8 @@
                     });
                     
                     canvas.toBlob(async (blob) => {
-                        const file = new File([blob], `birthday-card-${personName}.png`, { type: 'image/png' });
+                        const safeName = sanitizeFilename(personName);
+                        const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
                         const shareText = `🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`;
                         
                         try {
@@ -1050,7 +1057,8 @@
                     });
                     
                     canvas.toBlob(async (blob) => {
-                        const file = new File([blob], `birthday-card-${personName}.png`, { type: 'image/png' });
+                        const safeName = sanitizeFilename(personName);
+                        const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
                         
                         try {
                             await navigator.share({
@@ -1096,7 +1104,8 @@
                 });
                 
                 canvas.toBlob(async (blob) => {
-                    const file = new File([blob], `birthday-card-${personName}.png`, { type: 'image/png' });
+                    const safeName = sanitizeFilename(personName);
+                    const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
                     
                     // Try Web Share API (works on mobile)
                     if (navigator.share) {
@@ -1134,7 +1143,8 @@
                 });
                 
                 canvas.toBlob(async (blob) => {
-                    const file = new File([blob], `birthday-card-${personName}.png`, { type: 'image/png' });
+                    const safeName = sanitizeFilename(personName);
+                    const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
                     
                     // Try Web Share API (works on mobile)
                     if (navigator.share) {
