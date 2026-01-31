@@ -1199,7 +1199,7 @@
             const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
             const savedSpeed = localStorage.getItem('ttsSpeed');
             
-            if (savedVoiceIndex !== null && savedVoiceIndex !== '' && !isNaN(savedVoiceIndex)) {
+            if (savedVoiceIndex !== null && !isNaN(savedVoiceIndex)) {
                 const voiceIndex = parseInt(savedVoiceIndex);
                 if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
                     voiceSelect.value = savedVoiceIndex;
@@ -1246,7 +1246,7 @@
             
             // Set voice
             const selectedVoiceIndex = voiceSelect.value;
-            if (selectedVoiceIndex !== '' && selectedVoiceIndex !== null && !isNaN(selectedVoiceIndex)) {
+            if (selectedVoiceIndex !== '' && !isNaN(selectedVoiceIndex)) {
                 const voiceIndex = parseInt(selectedVoiceIndex);
                 if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
                     currentUtterance.voice = availableVoices[voiceIndex];
