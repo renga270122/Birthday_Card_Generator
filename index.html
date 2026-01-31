@@ -1328,18 +1328,17 @@
             }
             
             // Browser limitation: Direct audio download of speech synthesis is not supported
-            // Inform the user about alternatives
-            showNotification('Audio download of synthesized speech is not supported in browsers. You can use the "Read Aloud" button to hear the message, or use screen recording software to capture the audio.', 'info');
+            showNotification('Direct audio download is not supported by browsers. Please use the Read Aloud feature to listen.', 'info');
         });
 
         function showNotification(message, type = 'error') {
-            const errorDiv = document.getElementById('error');
+            const notificationDiv = document.getElementById('error');
             const icon = type === 'error' ? '⚠️' : 'ℹ️';
-            errorDiv.textContent = `${icon} ${message}`;
-            errorDiv.classList.add('show');
+            notificationDiv.textContent = `${icon} ${message}`;
+            notificationDiv.classList.add('show');
             
             setTimeout(() => {
-                errorDiv.classList.remove('show');
+                notificationDiv.classList.remove('show');
             }, 5000);
         }
 
