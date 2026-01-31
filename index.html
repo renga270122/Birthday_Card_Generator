@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create hilarious personalized birthday messages instantly with AI-powered Soulvest Birthday Card Generator">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <title>Soulvest B'day Card Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -786,6 +790,7 @@
 
     <footer>
         <p>✨ Made with 💝 by <a href="#" target="_blank">Soulvest</a> | Spreading Joy, One Birthday at a Time 🎉</p>
+        <p id="analyticsCounter" style="margin-top: 10px; font-size: 0.95em; color: #f093fb;">🎉 <span id="cardsCount">0</span> cards created today!</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -819,6 +824,19 @@
                 icon.textContent = '☀️';
             }
         });
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
 
         // Image upload handling
         const uploadArea = document.getElementById('uploadArea');
@@ -1082,6 +1100,19 @@
             
             document.getElementById('card').classList.add('show');
             
+            // Update analytics counter
+            updateAnalyticsCounter();
+            
+            // Save to history
+            saveToHistory({
+                name,
+                age,
+                hobby,
+                message: finalMessage,
+                image: uploadedImage,
+                timestamp: Date.now()
+            });
+            
             // Trigger confetti animation 🎉
             const duration = 3 * 1000;
             const animationEnd = Date.now() + duration;
@@ -1248,6 +1279,93 @@
             
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank', 'width=600,height=400');
         }
+
+        // Analytics counter functions
+        function updateAnalyticsCounter() {
+            const today = new Date().toDateString();
+            let analytics = JSON.parse(localStorage.getItem('cardAnalytics') || '{}');
+            
+            // Reset counter if it's a new day
+            if (analytics.date !== today) {
+                analytics = {
+                    date: today,
+                    count: 0
+                };
+            }
+            
+            // Increment counter
+            analytics.count++;
+            localStorage.setItem('cardAnalytics', JSON.stringify(analytics));
+            
+            // Update display
+            document.getElementById('cardsCount').textContent = analytics.count;
+        }
+
+        // Load analytics counter on page load
+        function loadAnalyticsCounter() {
+            const today = new Date().toDateString();
+            let analytics = JSON.parse(localStorage.getItem('cardAnalytics') || '{}');
+            
+            // Reset if new day
+            if (analytics.date !== today) {
+                analytics = {
+                    date: today,
+                    count: 0
+                };
+                localStorage.setItem('cardAnalytics', JSON.stringify(analytics));
+            }
+            
+            document.getElementById('cardsCount').textContent = analytics.count;
+        }
+
+        // Card history functions
+        function saveToHistory(cardData) {
+            let history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
+            
+            // Add to beginning of array
+            history.unshift(cardData);
+            
+            // Keep only last 10 cards
+            if (history.length > 10) {
+                history = history.slice(0, 10);
+            }
+            
+            localStorage.setItem('cardHistory', JSON.stringify(history));
+        }
+
+        function getHistory() {
+            return JSON.parse(localStorage.getItem('cardHistory') || '[]');
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('cardHistory');
+            alert('History cleared successfully!');
+        }
+
+        // Favorites functions
+        function saveToFavorites(cardData) {
+            let favorites = JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+            
+            // Add to favorites with unique ID
+            cardData.id = Date.now();
+            favorites.push(cardData);
+            
+            localStorage.setItem('cardFavorites', JSON.stringify(favorites));
+            alert('⭐ Card saved to favorites!');
+        }
+
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+        }
+
+        function removeFromFavorites(id) {
+            let favorites = JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+            favorites = favorites.filter(card => card.id !== id);
+            localStorage.setItem('cardFavorites', JSON.stringify(favorites));
+        }
+
+        // Initialize analytics counter on page load
+        window.addEventListener('DOMContentLoaded', loadAnalyticsCounter);
     </script>
 </body>
 </html>
