@@ -1322,14 +1322,22 @@
             pauseBtn.textContent = '⏸️ Pause';
         });
 
+        let notificationTimeout = null;
+        
         function showNotification(message, type = 'error') {
             const notificationDiv = document.getElementById('error');
             const icon = type === 'error' ? '⚠️' : 'ℹ️';
             notificationDiv.textContent = `${icon} ${message}`;
             notificationDiv.classList.add('show');
             
-            setTimeout(() => {
+            // Clear any existing timeout to prevent premature hiding
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout);
+            }
+            
+            notificationTimeout = setTimeout(() => {
                 notificationDiv.classList.remove('show');
+                notificationTimeout = null;
             }, 5000);
         }
 
