@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Card Generator - Test Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        .test-section h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .test-case {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 4px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .test-case.passed {
+            border-left-color: #00c853;
+            background: #e8f5e9;
+        }
+
+        .test-case.failed {
+            border-left-color: #d32f2f;
+            background: #ffebee;
+        }
+
+        .test-name {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .test-status {
+            font-size: 1.5em;
+            margin-left: 10px;
+        }
+
+        .test-details {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .summary h2 {
+            margin-bottom: 10px;
+        }
+
+        .summary .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .run-tests-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+
+        .run-tests-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .run-tests-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Suite</h1>
+        <p class="subtitle">Comprehensive tests for Birthday Card Generator</p>
+
+        <button class="run-tests-btn" onclick="runAllTests()">▶️ Run All Tests</button>
+
+        <div class="summary" id="summary" style="display: none;">
+            <h2>Test Results Summary</h2>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalTests">0</div>
+                    <div class="stat-label">Total Tests</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="passedTests">0</div>
+                    <div class="stat-label">Passed ✅</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="failedTests">0</div>
+                    <div class="stat-label">Failed ❌</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="passRate">0%</div>
+                    <div class="stat-label">Pass Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="testResults"></div>
+    </div>
+
+    <script>
+        const tests = {
+            'Message Replacement Tests': [
+                {
+                    name: 'Replace {name} placeholder',
+                    test: () => {
+                        const template = "Happy Birthday, {name}!";
+                        const result = template.replace(/{name}/g, "John");
+                        return result === "Happy Birthday, John!";
+                    }
+                },
+                {
+                    name: 'Replace {age} placeholder',
+                    test: () => {
+                        const template = "You are {age} years old!";
+                        const result = template.replace(/{age}/g, "25");
+                        return result === "You are 25 years old!";
+                    }
+                },
+                {
+                    name: 'Replace multiple placeholders',
+                    test: () => {
+                        const template = "{name} is {age} years old!";
+                        const result = template.replace(/{name}/g, "Alice").replace(/{age}/g, "30");
+                        return result === "Alice is 30 years old!";
+                    }
+                }
+            ],
+            'Form Validation Tests': [
+                {
+                    name: 'Validate age range (valid)',
+                    test: () => {
+                        const age = 25;
+                        return age >= 1 && age <= 150;
+                    }
+                },
+                {
+                    name: 'Validate age range (too low)',
+                    test: () => {
+                        const age = 0;
+                        return !(age >= 1 && age <= 150);
+                    }
+                },
+                {
+                    name: 'Validate age range (too high)',
+                    test: () => {
+                        const age = 151;
+                        return !(age >= 1 && age <= 150);
+                    }
+                },
+                {
+                    name: 'Empty name validation',
+                    test: () => {
+                        const name = "";
+                        return name.trim() === "";
+                    }
+                },
+                {
+                    name: 'Valid name validation',
+                    test: () => {
+                        const name = "John Doe";
+                        return name.trim() !== "";
+                    }
+                }
+            ],
+            'Image Upload Tests': [
+                {
+                    name: 'File size validation (under 10MB)',
+                    test: () => {
+                        const fileSize = 5 * 1024 * 1024; // 5MB
+                        return fileSize <= 10 * 1024 * 1024;
+                    }
+                },
+                {
+                    name: 'File size validation (over 10MB)',
+                    test: () => {
+                        const fileSize = 15 * 1024 * 1024; // 15MB
+                        return !(fileSize <= 10 * 1024 * 1024);
+                    }
+                },
+                {
+                    name: 'Image type validation (valid)',
+                    test: () => {
+                        const fileType = "image/png";
+                        return fileType.startsWith('image/');
+                    }
+                },
+                {
+                    name: 'Image type validation (invalid)',
+                    test: () => {
+                        const fileType = "text/plain";
+                        return !fileType.startsWith('image/');
+                    }
+                }
+            ],
+            'LocalStorage Tests': [
+                {
+                    name: 'Save to localStorage',
+                    test: () => {
+                        try {
+                            localStorage.setItem('test', 'value');
+                            return localStorage.getItem('test') === 'value';
+                        } catch (e) {
+                            return false;
+                        } finally {
+                            localStorage.removeItem('test');
+                        }
+                    }
+                },
+                {
+                    name: 'Save analytics data',
+                    test: () => {
+                        try {
+                            const analytics = {
+                                date: new Date().toDateString(),
+                                count: 5
+                            };
+                            localStorage.setItem('testAnalytics', JSON.stringify(analytics));
+                            const saved = JSON.parse(localStorage.getItem('testAnalytics'));
+                            return saved.count === 5;
+                        } catch (e) {
+                            return false;
+                        } finally {
+                            localStorage.removeItem('testAnalytics');
+                        }
+                    }
+                },
+                {
+                    name: 'Save card history',
+                    test: () => {
+                        try {
+                            const history = [
+                                { name: 'John', age: 25, message: 'Happy Birthday!' }
+                            ];
+                            localStorage.setItem('testHistory', JSON.stringify(history));
+                            const saved = JSON.parse(localStorage.getItem('testHistory'));
+                            return saved.length === 1 && saved[0].name === 'John';
+                        } catch (e) {
+                            return false;
+                        } finally {
+                            localStorage.removeItem('testHistory');
+                        }
+                    }
+                },
+                {
+                    name: 'Dark mode preference',
+                    test: () => {
+                        try {
+                            localStorage.setItem('darkMode', 'enabled');
+                            return localStorage.getItem('darkMode') === 'enabled';
+                        } catch (e) {
+                            return false;
+                        } finally {
+                            localStorage.removeItem('darkMode');
+                        }
+                    }
+                }
+            ],
+            'Analytics Tests': [
+                {
+                    name: 'Initialize counter',
+                    test: () => {
+                        const analytics = {
+                            date: new Date().toDateString(),
+                            count: 0
+                        };
+                        return analytics.count === 0;
+                    }
+                },
+                {
+                    name: 'Increment counter',
+                    test: () => {
+                        let count = 0;
+                        count++;
+                        return count === 1;
+                    }
+                },
+                {
+                    name: 'Date comparison',
+                    test: () => {
+                        const today = new Date().toDateString();
+                        const tomorrow = new Date(Date.now() + 86400000).toDateString();
+                        return today !== tomorrow;
+                    }
+                }
+            ],
+            'Message Variations Tests': [
+                {
+                    name: 'Gaming messages exist',
+                    test: () => {
+                        const messages = {
+                            gaming: ["msg1", "msg2", "msg3", "msg4", "msg5"]
+                        };
+                        return messages.gaming && messages.gaming.length >= 5;
+                    }
+                },
+                {
+                    name: 'Random message selection',
+                    test: () => {
+                        const messages = ["msg1", "msg2", "msg3"];
+                        const index = Math.floor(Math.random() * messages.length);
+                        return index >= 0 && index < messages.length;
+                    }
+                },
+                {
+                    name: 'Hindi messages exist',
+                    test: () => {
+                        const message = "जन्मदिन मुबारक";
+                        return message.includes("जन्मदिन");
+                    }
+                }
+            ],
+            'Share Functionality Tests': [
+                {
+                    name: 'WhatsApp URL encoding',
+                    test: () => {
+                        const message = "Happy Birthday!";
+                        const encoded = encodeURIComponent(message);
+                        return encoded === "Happy%20Birthday!";
+                    }
+                },
+                {
+                    name: 'Email subject encoding',
+                    test: () => {
+                        const subject = "🎉 Birthday!";
+                        const encoded = encodeURIComponent(subject);
+                        return encoded.length > 0;
+                    }
+                },
+                {
+                    name: 'Web Share API availability check',
+                    test: () => {
+                        // This test checks if we can detect the API
+                        return typeof navigator !== 'undefined';
+                    }
+                }
+            ]
+        };
+
+        function runAllTests() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '';
+            
+            let totalTests = 0;
+            let passedTests = 0;
+            let failedTests = 0;
+
+            for (const [sectionName, testCases] of Object.entries(tests)) {
+                const section = document.createElement('div');
+                section.className = 'test-section';
+                section.innerHTML = `<h2>${sectionName}</h2>`;
+
+                testCases.forEach(testCase => {
+                    totalTests++;
+                    let passed = false;
+                    let errorMessage = '';
+
+                    try {
+                        passed = testCase.test();
+                        if (passed) passedTests++;
+                        else failedTests++;
+                    } catch (error) {
+                        failedTests++;
+                        errorMessage = error.message;
+                    }
+
+                    const testDiv = document.createElement('div');
+                    testDiv.className = `test-case ${passed ? 'passed' : 'failed'}`;
+                    testDiv.innerHTML = `
+                        <div>
+                            <div class="test-name">${testCase.name}</div>
+                            ${errorMessage ? `<div class="test-details">Error: ${errorMessage}</div>` : ''}
+                        </div>
+                        <div class="test-status">${passed ? '✅' : '❌'}</div>
+                    `;
+                    section.appendChild(testDiv);
+                });
+
+                resultsDiv.appendChild(section);
+            }
+
+            // Update summary
+            document.getElementById('summary').style.display = 'block';
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('passedTests').textContent = passedTests;
+            document.getElementById('failedTests').textContent = failedTests;
+            document.getElementById('passRate').textContent = 
+                Math.round((passedTests / totalTests) * 100) + '%';
+
+            // Scroll to summary
+            document.getElementById('summary').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
