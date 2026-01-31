@@ -990,6 +990,8 @@
         let musicAudio = null;
         let isPlaying = false;
         let isMuted = false;
+        let audioContext = null;
+        let audioSource = null;
         const musicVersions = {
             classic: 'audio/happy-birthday-classic.mp3',
             jazz: 'audio/happy-birthday-jazz.mp3',
@@ -1074,7 +1076,7 @@
             document.getElementById('volumeValue').textContent = value + '%';
             
             // Update mute icon if volume is 0
-            if (value == 0) {
+            if (value === '0') {
                 document.getElementById('muteIcon').textContent = '🔇';
             } else if (isMuted) {
                 isMuted = false;
@@ -1491,15 +1493,22 @@
                 // Create a stream from the canvas
                 const canvasStream = videoCanvas.captureStream(30); // 30 fps
 
-                // Get audio stream if music is playing
+                // Get audio stream if music is available
                 let audioStream = null;
-                if (musicAudio && !musicAudio.paused) {
-                    // Create audio context to capture audio
-                    const audioContext = new AudioContext();
-                    const source = audioContext.createMediaElementSource(musicAudio);
+                if (musicAudio && !musicAudio.error) {
+                    // Create audio context to capture audio (only once)
+                    if (!audioContext) {
+                        audioContext = new AudioContext();
+                    }
+                    
+                    // Only create source if not already created
+                    if (!audioSource) {
+                        audioSource = audioContext.createMediaElementSource(musicAudio);
+                    }
+                    
                     const destination = audioContext.createMediaStreamDestination();
-                    source.connect(destination);
-                    source.connect(audioContext.destination);
+                    audioSource.connect(destination);
+                    audioSource.connect(audioContext.destination);
                     audioStream = destination.stream;
                 }
 
@@ -1514,11 +1523,17 @@
                     combinedStream = canvasStream;
                 }
 
+                // Check MediaRecorder support and select appropriate mimeType
+                let mimeType = 'video/webm';
+                if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+                    mimeType = 'video/webm;codecs=vp9,opus';
+                } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+                    mimeType = 'video/webm;codecs=vp8,opus';
+                }
+
                 // Setup MediaRecorder
                 const chunks = [];
-                const mediaRecorder = new MediaRecorder(combinedStream, {
-                    mimeType: 'video/webm;codecs=vp9,opus'
-                });
+                const mediaRecorder = new MediaRecorder(combinedStream, { mimeType });
 
                 mediaRecorder.ondataavailable = (e) => {
                     if (e.data.size > 0) {
@@ -1547,7 +1562,11 @@
 
                 // Draw the card image on canvas for the duration
                 let frameCount = 0;
-                const maxFrames = 300; // 10 seconds at 30fps
+                // Calculate duration based on audio length, default to 10 seconds
+                const audioDuration = (musicAudio && !musicAudio.error && musicAudio.duration) 
+                    ? musicAudio.duration 
+                    : 10;
+                const maxFrames = Math.floor(audioDuration * 30); // 30 fps
                 
                 const drawFrame = () => {
                     ctx.drawImage(canvas, 0, 0);
