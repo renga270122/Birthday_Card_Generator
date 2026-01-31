@@ -131,6 +131,70 @@
             color: #2d3436;
         }
 
+        .input-with-mic {
+            position: relative;
+        }
+
+        .input-with-mic input {
+            padding-right: 50px;
+        }
+
+        .mic-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .mic-button:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .mic-button.listening {
+            background: linear-gradient(135deg, #f5576c 0%, #e74c3c 100%);
+            animation: pulse 1s infinite;
+        }
+
+        .mic-button.recognized {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 87, 108, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(245, 87, 108, 0); }
+        }
+
+        .listening-indicator {
+            display: none;
+            font-size: 0.85em;
+            color: #f5576c;
+            margin-top: 5px;
+            font-weight: 600;
+            animation: blink 1s infinite;
+        }
+
+        .listening-indicator.show {
+            display: block;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         input::placeholder, select::placeholder {
             color: #b2bec3;
         }
@@ -502,6 +566,174 @@
             }
         }
 
+        /* TTS Controls */
+        .audio-controls {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .audio-controls-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .audio-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .audio-btn {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            min-width: 100px;
+        }
+
+        .audio-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .audio-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .audio-btn.pause-btn {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+        }
+
+        .audio-btn.stop-btn {
+            background: linear-gradient(135deg, #f5576c 0%, #e74c3c 100%);
+        }
+
+        .audio-btn.download-audio-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        }
+
+        .audio-settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .audio-setting {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .audio-setting label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .audio-setting select,
+        .audio-setting input[type="range"] {
+            padding: 8px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+        }
+
+        .speed-value {
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        .audio-visualizer {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+            margin-top: 15px;
+            height: 30px;
+        }
+
+        .audio-visualizer.show {
+            display: flex;
+        }
+
+        .audio-bar {
+            width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            animation: audioWave 0.8s ease-in-out infinite;
+        }
+
+        .audio-bar:nth-child(1) { animation-delay: 0s; }
+        .audio-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-bar:nth-child(4) { animation-delay: 0.3s; }
+        .audio-bar:nth-child(5) { animation-delay: 0.4s; }
+        .audio-bar:nth-child(6) { animation-delay: 0.3s; }
+        .audio-bar:nth-child(7) { animation-delay: 0.2s; }
+        .audio-bar:nth-child(8) { animation-delay: 0.1s; }
+
+        @keyframes audioWave {
+            0%, 100% { height: 10px; }
+            50% { height: 30px; }
+        }
+
+        .language-selector {
+            margin-bottom: 15px;
+        }
+
+        .language-selector label {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #2d3436;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .language-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-family: 'Poppins', sans-serif;
+            background: white;
+        }
+
+        @media (max-width: 600px) {
+            .audio-settings {
+                grid-template-columns: 1fr;
+            }
+            
+            .audio-buttons {
+                flex-direction: column;
+            }
+            
+            .audio-btn {
+                width: 100%;
+            }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 30px 20px;
@@ -612,9 +844,29 @@
             <div class="form-section">
                 <h2>✨ Birthday Details</h2>
                 
+                <div class="form-group language-selector">
+                    <label for="sttLanguage">🌍 Voice Input Language</label>
+                    <select id="sttLanguage">
+                        <option value="en-US">English (US)</option>
+                        <option value="en-GB">English (UK)</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="ta-IN">Tamil</option>
+                        <option value="te-IN">Telugu</option>
+                        <option value="kn-IN">Kannada</option>
+                        <option value="ml-IN">Malayalam</option>
+                        <option value="es-ES">Spanish</option>
+                        <option value="fr-FR">French</option>
+                        <option value="de-DE">German</option>
+                    </select>
+                </div>
+                
                 <div class="form-group">
                     <label for="name">👤 Person's Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter their name..." required>
+                    <div class="input-with-mic">
+                        <input type="text" id="name" name="name" placeholder="Enter their name..." required>
+                        <button type="button" class="mic-button" id="micButton" title="Click to speak">🎤</button>
+                    </div>
+                    <div class="listening-indicator" id="listeningIndicator">🎤 Listening...</div>
                     <div class="success-feedback" id="nameFeedback">✓ Name added</div>
                 </div>
 
@@ -683,6 +935,41 @@
             <div class="card-image" id="cardImage"></div>
             <div class="card-message" id="cardMessage"></div>
             <div class="card-decoration">🎈 💝 🎊</div>
+            
+            <!-- Audio Controls -->
+            <div class="audio-controls">
+                <div class="audio-controls-title">🔊 Audio Controls</div>
+                
+                <div class="audio-buttons">
+                    <button type="button" class="audio-btn" id="readAloudBtn">🔊 Read Aloud</button>
+                    <button type="button" class="audio-btn pause-btn" id="pauseBtn" disabled>⏸️ Pause</button>
+                    <button type="button" class="audio-btn stop-btn" id="stopBtn" disabled>⏹️ Stop</button>
+                    <button type="button" class="audio-btn download-audio-btn" id="downloadAudioBtn">⬇️ Download Audio</button>
+                </div>
+                
+                <div class="audio-settings">
+                    <div class="audio-setting">
+                        <label for="voiceSelect">Voice</label>
+                        <select id="voiceSelect"></select>
+                    </div>
+                    <div class="audio-setting">
+                        <label for="speedControl">Speed: <span class="speed-value" id="speedValue">1.0x</span></label>
+                        <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1">
+                    </div>
+                </div>
+                
+                <div class="audio-visualizer" id="audioVisualizer">
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                </div>
+            </div>
+            
             <div class="share-buttons">
                 <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
@@ -697,6 +984,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.0/lame.min.js"></script>
     <script>
         let uploadedImage = null;
 
@@ -761,6 +1049,339 @@
             imageInput.value = '';
             imagePreview.classList.remove('show');
             uploadArea.style.display = 'block';
+        }
+
+        // Speech-to-Text (STT) Implementation
+        let recognition;
+        let isListening = false;
+
+        // Check for browser support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            const micButton = document.getElementById('micButton');
+            const nameInput = document.getElementById('name');
+            const listeningIndicator = document.getElementById('listeningIndicator');
+            const sttLanguageSelect = document.getElementById('sttLanguage');
+            
+            // Load saved language preference
+            const savedSTTLanguage = localStorage.getItem('sttLanguage') || 'en-US';
+            sttLanguageSelect.value = savedSTTLanguage;
+            recognition.lang = savedSTTLanguage;
+            
+            // Save language preference when changed
+            sttLanguageSelect.addEventListener('change', function() {
+                recognition.lang = this.value;
+                localStorage.setItem('sttLanguage', this.value);
+            });
+            
+            micButton.addEventListener('click', function() {
+                if (isListening) {
+                    recognition.stop();
+                    return;
+                }
+                
+                try {
+                    recognition.start();
+                    isListening = true;
+                    micButton.classList.add('listening');
+                    listeningIndicator.classList.add('show');
+                } catch (error) {
+                    console.error('Speech recognition error:', error);
+                    showError('Could not start voice recognition. Please try again.');
+                }
+            });
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                nameInput.value = transcript;
+                nameInput.dispatchEvent(new Event('input'));
+                
+                micButton.classList.remove('listening');
+                micButton.classList.add('recognized');
+                
+                setTimeout(() => {
+                    micButton.classList.remove('recognized');
+                }, 2000);
+            };
+            
+            recognition.onend = function() {
+                isListening = false;
+                micButton.classList.remove('listening');
+                listeningIndicator.classList.remove('show');
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                isListening = false;
+                micButton.classList.remove('listening');
+                listeningIndicator.classList.remove('show');
+                
+                let errorMessage = 'Voice recognition error. ';
+                switch(event.error) {
+                    case 'no-speech':
+                        errorMessage += 'No speech detected. Please try again.';
+                        break;
+                    case 'audio-capture':
+                        errorMessage += 'No microphone found or permission denied.';
+                        break;
+                    case 'not-allowed':
+                        errorMessage += 'Microphone permission denied.';
+                        break;
+                    default:
+                        errorMessage += 'Please try again.';
+                }
+                showError(errorMessage);
+            };
+        } else {
+            // Hide mic button if not supported
+            const micButton = document.getElementById('micButton');
+            if (micButton) {
+                micButton.style.display = 'none';
+            }
+            console.warn('Speech Recognition not supported in this browser');
+        }
+
+        // Text-to-Speech (TTS) Implementation
+        let speechSynthesis = window.speechSynthesis;
+        let currentUtterance = null;
+        let isPaused = false;
+        let availableVoices = [];
+
+        const readAloudBtn = document.getElementById('readAloudBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const speedControl = document.getElementById('speedControl');
+        const speedValue = document.getElementById('speedValue');
+        const audioVisualizer = document.getElementById('audioVisualizer');
+
+        // Load voices
+        function loadVoices() {
+            availableVoices = speechSynthesis.getVoices();
+            voiceSelect.innerHTML = '';
+            
+            if (availableVoices.length === 0) {
+                voiceSelect.innerHTML = '<option>Loading voices...</option>';
+                return;
+            }
+            
+            // Filter and organize voices
+            const englishVoices = availableVoices.filter(voice => voice.lang.startsWith('en'));
+            const otherVoices = availableVoices.filter(voice => !voice.lang.startsWith('en'));
+            
+            // Add English voices first
+            if (englishVoices.length > 0) {
+                const engGroup = document.createElement('optgroup');
+                engGroup.label = 'English Voices';
+                englishVoices.forEach((voice, index) => {
+                    const option = document.createElement('option');
+                    option.value = index;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    engGroup.appendChild(option);
+                });
+                voiceSelect.appendChild(engGroup);
+            }
+            
+            // Add other voices
+            if (otherVoices.length > 0) {
+                const otherGroup = document.createElement('optgroup');
+                otherGroup.label = 'Other Voices';
+                availableVoices.forEach((voice, index) => {
+                    if (!voice.lang.startsWith('en')) {
+                        const option = document.createElement('option');
+                        option.value = availableVoices.indexOf(voice);
+                        option.textContent = `${voice.name} (${voice.lang})`;
+                        otherGroup.appendChild(option);
+                    }
+                });
+                voiceSelect.appendChild(otherGroup);
+            }
+            
+            // Load saved preferences
+            const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
+            const savedSpeed = localStorage.getItem('ttsSpeed');
+            
+            if (savedVoiceIndex && savedVoiceIndex < availableVoices.length) {
+                voiceSelect.value = savedVoiceIndex;
+            }
+            
+            if (savedSpeed) {
+                speedControl.value = savedSpeed;
+                speedValue.textContent = savedSpeed + 'x';
+            }
+        }
+
+        // Load voices on page load and when they change
+        loadVoices();
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = loadVoices;
+        }
+
+        // Save preferences
+        voiceSelect.addEventListener('change', function() {
+            localStorage.setItem('ttsVoiceIndex', this.value);
+        });
+
+        speedControl.addEventListener('input', function() {
+            speedValue.textContent = this.value + 'x';
+            localStorage.setItem('ttsSpeed', this.value);
+        });
+
+        // Read Aloud functionality
+        readAloudBtn.addEventListener('click', function() {
+            const message = document.getElementById('cardMessage').textContent;
+            
+            if (!message) {
+                showError('No message to read. Please generate a card first.');
+                return;
+            }
+            
+            // Stop any ongoing speech
+            if (currentUtterance) {
+                speechSynthesis.cancel();
+            }
+            
+            currentUtterance = new SpeechSynthesisUtterance(message);
+            
+            // Set voice
+            const selectedVoiceIndex = voiceSelect.value;
+            if (selectedVoiceIndex && availableVoices[selectedVoiceIndex]) {
+                currentUtterance.voice = availableVoices[selectedVoiceIndex];
+            }
+            
+            // Set speed
+            currentUtterance.rate = parseFloat(speedControl.value);
+            
+            // Event handlers
+            currentUtterance.onstart = function() {
+                readAloudBtn.disabled = true;
+                pauseBtn.disabled = false;
+                stopBtn.disabled = false;
+                audioVisualizer.classList.add('show');
+                isPaused = false;
+                readAloudBtn.textContent = '🔊 Playing...';
+            };
+            
+            currentUtterance.onend = function() {
+                readAloudBtn.disabled = false;
+                pauseBtn.disabled = true;
+                stopBtn.disabled = true;
+                audioVisualizer.classList.remove('show');
+                currentUtterance = null;
+                isPaused = false;
+                readAloudBtn.textContent = '🔊 Read Aloud';
+                pauseBtn.textContent = '⏸️ Pause';
+            };
+            
+            currentUtterance.onerror = function(event) {
+                console.error('Speech synthesis error:', event);
+                showError('Error playing audio. Please try again.');
+                readAloudBtn.disabled = false;
+                pauseBtn.disabled = true;
+                stopBtn.disabled = true;
+                audioVisualizer.classList.remove('show');
+                readAloudBtn.textContent = '🔊 Read Aloud';
+            };
+            
+            speechSynthesis.speak(currentUtterance);
+        });
+
+        // Pause/Resume functionality
+        pauseBtn.addEventListener('click', function() {
+            if (isPaused) {
+                speechSynthesis.resume();
+                isPaused = false;
+                pauseBtn.textContent = '⏸️ Pause';
+                audioVisualizer.classList.add('show');
+            } else {
+                speechSynthesis.pause();
+                isPaused = true;
+                pauseBtn.textContent = '▶️ Resume';
+                audioVisualizer.classList.remove('show');
+            }
+        });
+
+        // Stop functionality
+        stopBtn.addEventListener('click', function() {
+            speechSynthesis.cancel();
+            readAloudBtn.disabled = false;
+            pauseBtn.disabled = true;
+            stopBtn.disabled = true;
+            audioVisualizer.classList.remove('show');
+            currentUtterance = null;
+            isPaused = false;
+            readAloudBtn.textContent = '🔊 Read Aloud';
+            pauseBtn.textContent = '⏸️ Pause';
+        });
+
+        // Download Audio functionality
+        const downloadAudioBtn = document.getElementById('downloadAudioBtn');
+        
+        downloadAudioBtn.addEventListener('click', async function() {
+            const message = document.getElementById('cardMessage').textContent;
+            const personName = document.getElementById('name').value || 'birthday';
+            
+            if (!message) {
+                showError('No message to convert. Please generate a card first.');
+                return;
+            }
+            
+            const button = this;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Generating...';
+            button.disabled = true;
+            
+            try {
+                // Create utterance
+                const utterance = new SpeechSynthesisUtterance(message);
+                
+                // Set voice
+                const selectedVoiceIndex = voiceSelect.value;
+                if (selectedVoiceIndex && availableVoices[selectedVoiceIndex]) {
+                    utterance.voice = availableVoices[selectedVoiceIndex];
+                }
+                
+                // Set speed
+                utterance.rate = parseFloat(speedControl.value);
+                
+                // Use MediaRecorder to capture audio
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    // Fallback: Just speak and inform user
+                    speechSynthesis.speak(utterance);
+                    showError('Audio download not fully supported in this browser. The message will be played instead.');
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    return;
+                }
+                
+                // Alternative approach: use Web Audio API with speech synthesis
+                // Since direct recording of speech synthesis is complex, we'll inform the user
+                showError('Direct audio download is not fully supported. Please use screen recording or a browser extension to capture audio.');
+                
+                button.textContent = originalText;
+                button.disabled = false;
+                
+            } catch (error) {
+                console.error('Error downloading audio:', error);
+                showError('Error generating audio file. Please try again.');
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        });
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('show');
+            
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
         }
 
         const messages = {
