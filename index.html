@@ -1534,7 +1534,7 @@
                     logging: false,
                     allowTaint: true,
                     useCORS: true,
-                    imageTimeout: 0,
+                    imageTimeout: 15000,
                     windowWidth: cardContent.scrollWidth,
                     windowHeight: cardContent.scrollHeight
                 });
@@ -1569,9 +1569,9 @@
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
 
-        function copyAppURL(event) {
+        function copyAppURL(event = null) {
             const appURL = 'https://renga270122.github.io/Birthday_Card_Generator/';
-            const button = event ? event.target : document.querySelector('.copy-url-btn');
+            const button = event?.target || document.querySelector('.copy-url-btn');
             const originalText = button.textContent;
             
             navigator.clipboard.writeText(appURL).then(() => {
