@@ -1154,6 +1154,15 @@
         const speedValue = document.getElementById('speedValue');
         const audioVisualizer = document.getElementById('audioVisualizer');
 
+        // Helper function to get validated voice index
+        function getValidatedVoiceIndex(value) {
+            if (value === null || value === '' || isNaN(value)) {
+                return null;
+            }
+            const index = parseInt(value);
+            return (index >= 0 && index < availableVoices.length) ? index : null;
+        }
+
         // Load voices
         function loadVoices() {
             availableVoices = speechSynthesis.getVoices();
@@ -1199,11 +1208,9 @@
             const savedVoiceIndex = localStorage.getItem('ttsVoiceIndex');
             const savedSpeed = localStorage.getItem('ttsSpeed');
             
-            if (savedVoiceIndex !== null && !isNaN(savedVoiceIndex)) {
-                const voiceIndex = parseInt(savedVoiceIndex);
-                if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
-                    voiceSelect.value = savedVoiceIndex;
-                }
+            const voiceIndex = getValidatedVoiceIndex(savedVoiceIndex);
+            if (voiceIndex !== null) {
+                voiceSelect.value = voiceIndex;
             }
             
             if (savedSpeed) {
@@ -1245,12 +1252,9 @@
             currentUtterance = new SpeechSynthesisUtterance(message);
             
             // Set voice
-            const selectedVoiceIndex = voiceSelect.value;
-            if (selectedVoiceIndex !== '' && !isNaN(selectedVoiceIndex)) {
-                const voiceIndex = parseInt(selectedVoiceIndex);
-                if (voiceIndex >= 0 && voiceIndex < availableVoices.length) {
-                    currentUtterance.voice = availableVoices[voiceIndex];
-                }
+            const voiceIndex = getValidatedVoiceIndex(voiceSelect.value);
+            if (voiceIndex !== null) {
+                currentUtterance.voice = availableVoices[voiceIndex];
             }
             
             // Set speed
