@@ -9,6 +9,8 @@ android/local.properties
 *.jks
 Soulvest.jks
 *.keystore
+keystore.base64
+*.base64
 .env
 .env.local
 coverage/
