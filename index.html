@@ -710,6 +710,10 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
+        // Image quality constants
+        const DOWNLOAD_IMAGE_SCALE = 4; // High quality for downloads
+        const SHARE_IMAGE_SCALE = 2;    // Balanced quality/performance for sharing
+        
         let uploadedImage = null;
 
         // Image upload handling
@@ -955,7 +959,7 @@
             try {
                 const canvas = await html2canvas(card, {
                     backgroundColor: '#fff',
-                    scale: 4,
+                    scale: DOWNLOAD_IMAGE_SCALE,
                     logging: false,
                     allowTaint: true,
                     useCORS: true
@@ -992,7 +996,7 @@
                 try {
                     const canvas = await html2canvas(card, {
                         backgroundColor: '#fff',
-                        scale: 2,
+                        scale: SHARE_IMAGE_SCALE,
                         logging: false,
                         allowTaint: true,
                         useCORS: true
@@ -1039,7 +1043,7 @@
                 try {
                     const canvas = await html2canvas(card, {
                         backgroundColor: '#fff',
-                        scale: 2,
+                        scale: SHARE_IMAGE_SCALE,
                         logging: false,
                         allowTaint: true,
                         useCORS: true
@@ -1085,7 +1089,7 @@
                 // Generate the card image
                 const canvas = await html2canvas(card, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: SHARE_IMAGE_SCALE,
                     logging: false,
                     allowTaint: true,
                     useCORS: true
@@ -1123,7 +1127,7 @@
                 // Generate the card image
                 const canvas = await html2canvas(card, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: SHARE_IMAGE_SCALE,
                     logging: false,
                     allowTaint: true,
                     useCORS: true
