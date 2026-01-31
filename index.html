@@ -546,6 +546,11 @@
             color: white;
         }
 
+        .copy-url-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
         .share-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -927,10 +932,13 @@
         </form>
 
         <div class="card" id="card">
-            <div class="card-decoration">🎂 ✨ 🎉</div>
-            <div class="card-image" id="cardImage"></div>
-            <div class="card-message" id="cardMessage"></div>
-            <div class="card-decoration">🎈 💝 🎊</div>
+            <!-- Card Content Wrapper for Download -->
+            <div id="cardContent">
+                <div class="card-decoration">🎂 ✨ 🎉</div>
+                <div class="card-image" id="cardImage"></div>
+                <div class="card-message" id="cardMessage"></div>
+                <div class="card-decoration">🎈 💝 🎊</div>
+            </div>
             
             <!-- Audio Controls -->
             <div class="audio-controls">
@@ -968,6 +976,7 @@
             <div class="share-buttons">
                 <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
+                <button type="button" class="share-btn copy-url-btn" onclick="copyAppURL(event)">🔗 Copy URL</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
             </div>
@@ -1512,19 +1521,22 @@
         }
 
         async function downloadCard() {
-            const card = document.getElementById('card');
+            const cardContent = document.getElementById('cardContent');
             const button = event.target;
             const originalText = button.textContent;
             button.textContent = '⏳ Generating...';
             button.disabled = true;
 
             try {
-                const canvas = await html2canvas(card, {
+                const canvas = await html2canvas(cardContent, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: 3,
                     logging: false,
                     allowTaint: true,
-                    useCORS: true
+                    useCORS: true,
+                    imageTimeout: 0,
+                    windowWidth: cardContent.scrollWidth,
+                    windowHeight: cardContent.scrollHeight
                 });
 
                 const link = document.createElement('a');
@@ -1555,6 +1567,31 @@
             // For WhatsApp Web
             const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
             window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function copyAppURL(event) {
+            const appURL = 'https://renga270122.github.io/Birthday_Card_Generator/';
+            const button = event ? event.target : document.querySelector('.copy-url-btn');
+            const originalText = button.textContent;
+            
+            navigator.clipboard.writeText(appURL).then(() => {
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = appURL;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                button.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
         }
 
         function shareEmail() {
