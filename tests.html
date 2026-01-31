@@ -411,8 +411,8 @@
                 {
                     name: 'Web Share API availability check',
                     test: () => {
-                        // This test checks if we can detect the API
-                        return typeof navigator !== 'undefined';
+                        // This test checks if Web Share API is available
+                        return 'share' in navigator;
                     }
                 }
             ]

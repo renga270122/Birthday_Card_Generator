@@ -1215,12 +1215,12 @@
             const message = document.getElementById('cardMessage').textContent;
             
             // Try to use Web Share API if available (supports images on mobile)
-            if (navigator.share && navigator.canShare) {
+            if (navigator.share) {
                 try {
                     const card = document.getElementById('card');
                     const canvas = await html2canvas(card, {
                         backgroundColor: '#fff',
-                        scale: 3,
+                        scale: 2,
                         logging: false,
                         allowTaint: true,
                         useCORS: true
@@ -1234,7 +1234,7 @@
                             files: [file]
                         };
                         
-                        if (navigator.canShare(shareData)) {
+                        if (navigator.canShare && navigator.canShare(shareData)) {
                             await navigator.share(shareData);
                             return;
                         }
@@ -1263,7 +1263,7 @@
             const personName = document.getElementById('name').value;
             const message = document.getElementById('cardMessage').textContent;
             
-            alert('📷 To share on Instagram:\n\n1. Download the card image using the Download button\n2. Open Instagram app\n3. Create a new post or story\n4. Upload the downloaded image\n5. Add your caption and share!\n\nThe card image will be downloaded automatically now.');
+            alert('📷 To share on Instagram:\n\nThe card image will be downloaded automatically. Then:\n\n1. Open Instagram app\n2. Create a new post or story\n3. Upload the downloaded image\n4. Add your caption and share!');
             
             // Automatically trigger download
             await downloadCard();
