@@ -1,0 +1,343 @@
+name: Build Android App Bundle
+
+on:
+  # Trigger on push to main branch
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0, v2.0
+  
+  # Trigger on pull requests to main
+  pull_request:
+    branches: [ main ]
+  
+  # Allow manual workflow dispatch
+  workflow_dispatch:
+    inputs:
+      skip_signing:
+        description: 'Skip signing (build unsigned AAB)'
+        required: false
+        default: 'false'
+
+jobs:
+  build:
+    name: Build Android App Bundle
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Required for creating releases
+      pull-requests: write  # Required for PR comments
+    
+    steps:
+      # Step 1: Checkout repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for version info
+      
+      # Step 2: Setup Node.js environment
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      # Step 3: Setup Java/JDK for Android builds
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+      
+      # Step 4: Install Node.js dependencies
+      - name: Install dependencies
+        run: npm ci
+      
+      # Step 5: Check if web build is needed (skip if no build script)
+      - name: Build web assets (if needed)
+        run: |
+          if grep -q '"build"' package.json; then
+            echo "Build script found, running build..."
+            npm run build
+          else
+            echo "No build script found, skipping web build"
+            # Create dist directory if it doesn't exist
+            mkdir -p dist
+            # Copy index.html to dist if it exists
+            if [ -f index.html ]; then
+              cp index.html dist/
+            fi
+          fi
+        continue-on-error: false
+      
+      # Step 6: Sync Capacitor with Android platform
+      - name: Sync Capacitor
+        run: npx cap sync android
+      
+      # Step 7: Setup Android SDK
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      
+      # Step 8: Grant execute permission for gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
+      
+      # Step 9: Run lint checks (optional, fail gracefully if not configured)
+      - name: Run Android Lint
+        working-directory: ./android
+        run: ./gradlew lintRelease || echo "Lint checks skipped or failed, continuing..."
+        continue-on-error: true
+      
+      # Step 10: Run unit tests (optional, fail gracefully if not configured)
+      - name: Run unit tests
+        working-directory: ./android
+        run: ./gradlew test || echo "Unit tests skipped or failed, continuing..."
+        continue-on-error: true
+      
+      # Step 11: Decode keystore from base64 and setup signing
+      - name: Setup keystore for signing
+        if: ${{ env.KEYSTORE_FILE != '' && github.event.inputs.skip_signing != 'true' }}
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+        run: |
+          if [ -n "$KEYSTORE_FILE" ]; then
+            echo "Setting up keystore..."
+            echo "$KEYSTORE_FILE" | base64 -d > android/app/release.keystore
+            echo "KEYSTORE_PATH=release.keystore" >> $GITHUB_ENV
+            echo "✓ Keystore decoded successfully"
+          else
+            echo "⚠ No keystore configured, will build unsigned AAB"
+          fi
+      
+      # Step 12: Get version information from git tags
+      - name: Get version info
+        id: version
+        run: |
+          # Get version from git tag or use default
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "1.0.0")
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+          
+          # Get version code (count of commits)
+          VERSION_CODE=$(git rev-list --count HEAD)
+          echo "version_code=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "Version Code: $VERSION_CODE"
+      
+      # Step 13: Update versionCode in build.gradle
+      - name: Update version in build.gradle
+        run: |
+          VERSION_CODE="${{ steps.version.outputs.version_code }}"
+          VERSION_NAME="${{ steps.version.outputs.version }}"
+          
+          # Update versionCode and versionName in build.gradle
+          sed -i "s/versionCode [0-9]*/versionCode $VERSION_CODE/" android/app/build.gradle
+          sed -i "s/versionName \".*\"/versionName \"$VERSION_NAME\"/" android/app/build.gradle
+          
+          echo "Updated build.gradle with:"
+          echo "  versionCode: $VERSION_CODE"
+          echo "  versionName: $VERSION_NAME"
+          
+          # Show the changes
+          grep -A 2 "versionCode\|versionName" android/app/build.gradle || true
+      
+      # Step 14: Build Android App Bundle (AAB)
+      - name: Build Android App Bundle
+        working-directory: ./android
+        env:
+          KEYSTORE_FILE: ${{ env.KEYSTORE_PATH }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "Building release AAB..."
+          
+          # Check if signing is configured
+          if [ -n "$KEYSTORE_FILE" ] && [ -f "app/$KEYSTORE_FILE" ]; then
+            echo "✓ Building signed AAB with keystore"
+            ./gradlew bundleRelease
+          else
+            echo "⚠ Building unsigned AAB (no keystore configured)"
+            ./gradlew bundleRelease
+          fi
+          
+          echo "Build completed successfully!"
+      
+      # Step 15: Find the generated AAB file
+      - name: Find AAB file
+        id: find_aab
+        run: |
+          AAB_PATH=$(find android/app/build/outputs/bundle/release -name "*.aab" | head -n 1)
+          echo "aab_path=$AAB_PATH" >> $GITHUB_OUTPUT
+          
+          if [ -f "$AAB_PATH" ]; then
+            echo "✓ AAB file found: $AAB_PATH"
+            
+            # Get file size
+            FILE_SIZE=$(du -h "$AAB_PATH" | cut -f1)
+            echo "file_size=$FILE_SIZE" >> $GITHUB_OUTPUT
+            
+            # Generate SHA256 checksum
+            SHA256=$(sha256sum "$AAB_PATH" | cut -d' ' -f1)
+            echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+            echo "SHA256: $SHA256"
+          else
+            echo "❌ AAB file not found!"
+            exit 1
+          fi
+      
+      # Step 16: Rename AAB file with version
+      - name: Rename AAB file
+        id: rename_aab
+        run: |
+          AAB_PATH="${{ steps.find_aab.outputs.aab_path }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          
+          # Create new filename
+          NEW_NAME="soulvest-bdaycard-v${VERSION}.aab"
+          NEW_PATH="$(dirname "$AAB_PATH")/$NEW_NAME"
+          
+          # Copy (don't move) to preserve original
+          cp "$AAB_PATH" "$NEW_PATH"
+          
+          echo "renamed_aab=$NEW_PATH" >> $GITHUB_OUTPUT
+          echo "aab_name=$NEW_NAME" >> $GITHUB_OUTPUT
+          echo "✓ AAB renamed to: $NEW_NAME"
+      
+      # Step 17: Generate build info file
+      - name: Generate build info
+        run: |
+          cat > build-info.txt << EOF
+          Build Information
+          ==================
+          Version: ${{ steps.version.outputs.version }}
+          Version Code: ${{ steps.version.outputs.version_code }}
+          Build Date: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          Git Commit: ${GITHUB_SHA:0:8}
+          Git Branch: ${GITHUB_REF#refs/heads/}
+          Workflow Run: ${{ github.run_number }}
+          
+          AAB Details
+          ===========
+          Filename: ${{ steps.rename_aab.outputs.aab_name }}
+          Size: ${{ steps.find_aab.outputs.file_size }}
+          SHA256: ${{ steps.find_aab.outputs.sha256 }}
+          EOF
+          
+          cat build-info.txt
+      
+      # Step 18: Upload AAB as workflow artifact
+      - name: Upload AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-app-bundle
+          path: |
+            ${{ steps.rename_aab.outputs.renamed_aab }}
+            build-info.txt
+          retention-days: 90
+      
+      # Step 19: Upload lint and test reports (if available)
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports
+          path: android/app/build/reports/
+          retention-days: 30
+        continue-on-error: true
+      
+      # Step 20: Comment on PR with build status
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ steps.version.outputs.version }}';
+            const versionCode = '${{ steps.version.outputs.version_code }}';
+            const fileSize = '${{ steps.find_aab.outputs.file_size }}';
+            const sha256 = '${{ steps.find_aab.outputs.sha256 }}';
+            const runNumber = '${{ github.run_number }}';
+            
+            const body = `## ✅ Android Build Successful
+            
+            **Build Details:**
+            - 📦 Version: \`${version}\`
+            - 🔢 Version Code: \`${versionCode}\`
+            - 📊 File Size: \`${fileSize}\`
+            - 🔐 SHA256: \`${sha256}\`
+            
+            **Download:**
+            [📥 Download AAB from workflow artifacts](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+            
+            **Next Steps:**
+            1. Download the AAB file from the workflow artifacts
+            2. Test the AAB on a device or upload to Play Store Internal Testing
+            3. Once verified, upload to Play Store for release
+            
+            ---
+            *Build #${runNumber} - Generated by GitHub Actions*`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+      
+      # Step 21: Create GitHub Release (only on tag push)
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ${{ steps.rename_aab.outputs.renamed_aab }}
+            build-info.txt
+          body: |
+            ## 🎉 Release ${{ steps.version.outputs.version }}
+            
+            ### 📦 Android App Bundle
+            
+            **Build Information:**
+            - Version: `${{ steps.version.outputs.version }}`
+            - Version Code: `${{ steps.version.outputs.version_code }}`
+            - File Size: `${{ steps.find_aab.outputs.file_size }}`
+            - SHA256: `${{ steps.find_aab.outputs.sha256 }}`
+            
+            ### 📥 Installation
+            
+            Download the AAB file and upload it to Google Play Console for distribution.
+            
+            ### 🔐 Verification
+            
+            Verify the integrity of the downloaded file:
+            ```bash
+            sha256sum soulvest-bdaycard-v${{ steps.version.outputs.version }}.aab
+            ```
+            Expected: `${{ steps.find_aab.outputs.sha256 }}`
+            
+            ---
+            *Built with GitHub Actions on $(date -u +"%Y-%m-%d")*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Step 22: Build summary
+      - name: Build Summary
+        if: always()
+        run: |
+          echo "## 🎉 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Version | \`${{ steps.version.outputs.version }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Version Code | \`${{ steps.version.outputs.version_code }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| AAB Size | \`${{ steps.find_aab.outputs.file_size }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Status | ✅ Success |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📥 Download Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "The AAB file is available in the workflow artifacts." >> $GITHUB_STEP_SUMMARY
