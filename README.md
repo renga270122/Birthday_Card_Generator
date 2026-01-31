@@ -8,10 +8,18 @@ Create hilarious, personalized birthday messages in seconds! Generate unique, fu
 
 - 🤖 **AI-Powered Message Generation** - Intelligent, personalized birthday messages
 - 📸 **Photo Upload** - Add personal photos to your cards
+- 🎵 **Happy Birthday Music** - NEW! Background music with controls
+  - 3 instrumental versions (Classic, Jazz, Piano)
+  - Play/pause controls
+  - Volume slider and mute button
+  - Progress bar with time display
+  - Loop option
+  - Download card with music as video
 - 💬 **Multiple Sharing Options**:
   - Share directly to WhatsApp
   - Send via Email
   - Download as PNG images
+  - Download with music as video
   - Copy to clipboard
 - 🎯 **14+ Hobby Categories** - Messages tailored to interests
 - 🎨 **Beautiful Design** - Modern, responsive interface
@@ -28,9 +36,15 @@ Create hilarious, personalized birthday messages in seconds! Generate unique, fu
 2. **Customize** (Optional)
    - Upload a birthday photo
 
-3. **Generate & Share**
+3. **Add Music** (Optional)
+   - Select music version (Classic, Jazz, or Piano)
+   - Play background music while viewing card
+   - Control volume and playback
+
+4. **Generate & Share**
    - Get a funny personalized message
    - Copy, download, or share instantly
+   - Download with music as video
 
 ## 📱 Platform Support
 
@@ -41,6 +55,8 @@ Create hilarious, personalized birthday messages in seconds! Generate unique, fu
 ## 🚀 Tech Stack
 
 - **Frontend**: HTML5, CSS3, JavaScript
+- **Audio**: HTML5 Audio API, Web Audio API
+- **Video**: MediaRecorder API for video generation
 - **Mobile**: Capacitor + Android
 - **Build**: Gradle, npm
 - **Design**: Responsive, mobile-first approach
@@ -50,6 +66,9 @@ Create hilarious, personalized birthday messages in seconds! Generate unique, fu
 ```
 Birthday_Card_Generator/
 ├── index.html                 # Main web app
+├── audio/                     # Music files folder
+│   ├── README.md              # Audio setup instructions
+│   └── *.mp3                  # Happy Birthday music (add these)
 ├── dist/                      # Built web files
 ├── android/                   # Android project
 │   ├── app/                   # App module
@@ -100,6 +119,19 @@ npx cap sync android
 # Open Android Studio and use Build > Generate Signed Bundle
 ```
 
+### Adding Music Files
+
+To enable the music feature, add royalty-free Happy Birthday instrumental MP3 files to the `/audio` folder:
+
+```bash
+# Required files:
+audio/happy-birthday-classic.mp3
+audio/happy-birthday-jazz.mp3
+audio/happy-birthday-piano.mp3
+```
+
+See `audio/README.md` for sources of royalty-free music.
+
 ## 🎮 Usage
 
 1. Open the app (web or Android)
@@ -108,8 +140,13 @@ npx cap sync android
 4. Select their hobby from the dropdown
 5. (Optional) Upload a birthday photo
 6. Click "Generate Birthday Message"
-7. Choose how to share:
+7. (Optional) Play background music
+   - Select music version
+   - Control playback and volume
+   - Toggle loop option
+8. Choose how to share:
    - Download as image
+   - Download with music (video)
    - Share to WhatsApp
    - Send via Email
    - Copy to clipboard
