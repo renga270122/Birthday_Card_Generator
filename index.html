@@ -709,6 +709,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         let uploadedImage = null;
 
@@ -779,77 +780,137 @@
             gaming: [
                 "Congratulations on leveling up to {age}! 🎮 You're now {age} achievements older, but still no match for my gaming skills!",
                 "Happy {age}th Birthday! You're officially in the {age}+ age bracket... in video games, this means you have {age} special attacks unlocked! ⚔️",
-                "You've successfully completed another year! Achievement unlocked: Turned {age}. Bonus: Not dead yet! 🏆"
+                "You've successfully completed another year! Achievement unlocked: Turned {age}. Bonus: Not dead yet! 🏆",
+                "{name}, at {age}, you've got more experience points than anyone! Keep grinding through life! 🎮",
+                "Happy {age}th Birthday, {name}! Your life's save file just got {age} years richer! Time for the next quest! 🏰",
+                "जन्मदिन मुबारक हो, {name}! आप {age} साल के हो गए। गेमिंग की तरह, जीवन में भी आप हमेशा विजेता रहें! 🎯 (Happy Birthday! You're {age}. Like in gaming, may you always be a winner in life!)",
+                "{name}, you've reached level {age}! Boss battles? Bring 'em on! You're unstoppable! 👾"
             ],
             reading: [
                 "Happy {age}th Birthday, {name}! 📖 You've been aging at chapter {age} of your life's great novel. Can't wait to read the next chapter!",
                 "Congratulations on turning {age}! You're like a book that keeps getting more interesting. And unlike most books, you don't have an expiration date (yet).",
-                "{name}, you're now {age} years old. That's {age} years of plotlines, character development, and plot twists. Best story ever! 📚"
+                "{name}, you're now {age} years old. That's {age} years of plotlines, character development, and plot twists. Best story ever! 📚",
+                "At {age}, {name}, you're a bestseller! Each year adds another fascinating chapter to your story. 📕",
+                "Happy {age}th Birthday! Your life is poetry in motion, and {age} verses in, it's a masterpiece! ✍️",
+                "जन्मदिन की शुभकामनाएं, {name}! {age} साल की उम्र में, आपकी जीवन कहानी बेहतरीन है! 📚 (Happy Birthday! At {age}, your life story is amazing!)",
+                "{name}, {age} years of wisdom written in the book of life. What a beautiful read! 📖"
             ],
             cooking: [
                 "Happy {age}th Birthday, {name}! 👨‍🍳 You're aging like fine wine... or a well-marinated steak at {age} years old!",
                 "Congratulations on turning {age}! You're getting older, but at least you know how to season your life perfectly. 🧂",
-                "{name}, you're now {age} and getting spicier with age! Happy Birthday to the finest ingredient in the recipe of life! 🌶️"
+                "{name}, you're now {age} and getting spicier with age! Happy Birthday to the finest ingredient in the recipe of life! 🌶️",
+                "At {age}, you're perfectly cooked - not too raw, not overdone. Just chef's kiss! 👨‍🍳",
+                "Happy {age}th Birthday! Like a master chef, you've perfected the recipe for an amazing life! 🍰",
+                "{name}, you're {age} and more delicious than a 5-star meal! Keep cooking up happiness! 🍳",
+                "जन्मदिन मुबारक, {name}! {age} साल की उम्र में आप जीवन का सबसे अच्छा व्यंजन हैं! 🎂 (Happy Birthday! At {age}, you're life's best dish!)"
             ],
             sports: [
                 "Happy {age}th Birthday, {name}! ⚽ You've completed {age} laps around the sun. That's like running a marathon... but without leaving Earth!",
                 "Congratulations on turning {age}! You're now officially in your prime athletic years... to go professional in sitting on the couch. 🛋️",
-                "{name}, at {age} years old, you're still a champion in our hearts. Even if you're more of a cheerleader these days! 🏆"
+                "{name}, at {age} years old, you're still a champion in our hearts. Even if you're more of a cheerleader these days! 🏆",
+                "Happy {age}th Birthday! You're scoring goals in life like a true MVP at {age}! ⚽",
+                "{name}, {age} years of playing the game of life - and you're winning! 🥇",
+                "At {age}, you're still in top form! Age is just a number on your jersey! 🏅",
+                "जन्मदिन की बधाई, {name}! {age} साल में भी आप एक चैंपियन हैं! 🏆 (Happy Birthday! Even at {age}, you're a champion!)"
             ],
             music: [
                 "Happy {age}th Birthday, {name}! 🎵 You're now {age} years old - that's {age} years of questionable music taste and we still love you!",
                 "Congratulations on turning {age}! Your life is a beautiful symphony, and you're conducting it like the maestro you are. 🎼",
-                "{name}, you're now {age}! That's {age} years of hitting the right notes (and missing some too, but we won't judge)! 🎤"
+                "{name}, you're now {age}! That's {age} years of hitting the right notes (and missing some too, but we won't judge)! 🎤",
+                "At {age}, {name}, your life's melody is more beautiful than ever! Keep composing magic! 🎶",
+                "Happy {age}th Birthday! You're the rockstar of our lives, hitting high notes at {age}! 🎸",
+                "{name}, {age} years of making beautiful music with your life! Encore! 👏",
+                "जन्मदिन मुबारक, {name}! {age} साल की उम्र में, आपका जीवन संगीत सबसे मधुर है! 🎵 (Happy Birthday! At {age}, your life's music is most melodious!)"
             ],
             art: [
                 "Happy {age}th Birthday, {name}! 🎨 You're a masterpiece at {age} years old - slightly aged, but still appreciated!",
                 "Congratulations on turning {age}! Your life is a work of art, and at {age}, you're definitely in the 'vintage' category now. 🖼️",
-                "{name}, you're {age} and absolutely breathtaking! Happy Birthday to our favorite canvas of memories! 🌈"
+                "{name}, you're {age} and absolutely breathtaking! Happy Birthday to our favorite canvas of memories! 🌈",
+                "At {age}, {name}, you're a timeless piece of art - valuable and beautiful! 🎨",
+                "Happy {age}th Birthday! Every year adds another brushstroke to your masterpiece! 🖌️",
+                "{name}, {age} years of creating beauty in this world. You're our Picasso! 🎨",
+                "You're {age} and still painting life with the brightest colors! Keep creating magic! 🌟"
             ],
             travel: [
                 "Happy {age}th Birthday, {name}! ✈️ You've traveled {age} years around the sun. Next stop: {age}+1!",
                 "Congratulations on turning {age}! You're now another year older and hopefully {age} times wiser. Or at least {age} times more lost! 🗺️",
-                "{name}, at {age} years old, you're on the world's best journey. Thanks for letting us be your travel companions! 🌍"
+                "{name}, at {age} years old, you're on the world's best journey. Thanks for letting us be your travel companions! 🌍",
+                "Happy {age}th Birthday! Your passport of life has {age} amazing stamps! More adventures await! 🛫",
+                "{name}, at {age}, you've explored more of life than most! Keep wandering! 🗺️",
+                "Life's journey at {age} is your best trip yet, {name}! Bon voyage to another year! 🌏",
+                "जन्मदिन मुबारक, {name}! {age} साल की यात्रा में, आपने जीवन के सुंदर पल देखे हैं! ✈️ (Happy Birthday! In {age} years of journey, you've seen beautiful moments!)"
             ],
             gardening: [
                 "Happy {age}th Birthday, {name}! 🌱 You've been growing beautifully for {age} years. Here's to planting more seeds of wisdom!",
                 "Congratulations on turning {age}! Like a well-maintained garden, you're aging gracefully - just with a few more weeds. 🌻",
-                "{name}, you're now {age}! That's {age} years of blooming, growing, and occasionally being a little thorny. We love it! 🌹"
+                "{name}, you're now {age}! That's {age} years of blooming, growing, and occasionally being a little thorny. We love it! 🌹",
+                "At {age}, {name}, you're in full bloom! Your garden of life is magnificent! 🌺",
+                "Happy {age}th Birthday! You've cultivated {age} years of beauty and wisdom! 🌸",
+                "{name}, like a perennial flower, you come back more beautiful each year at {age}! 🌼",
+                "You're {age} and still growing strong! Your roots run deep, your flowers bloom bright! 🌷"
             ],
             photography: [
                 "Happy {age}th Birthday, {name}! 📷 You're {age} years old and still the most beautiful frame in our collection!",
                 "Congratulations on turning {age}! Life is like photography - you develop it in the dark. You've had {age} very dark years, apparently! 📸",
-                "{name}, at {age} years old, you're officially vintage film material. Happy Birthday to our favorite subject! 🎬"
+                "{name}, at {age} years old, you're officially vintage film material. Happy Birthday to our favorite subject! 🎬",
+                "At {age}, {name}, you're picture perfect! Every angle is your best angle! 📸",
+                "Happy {age}th Birthday! Your life at {age} is captured in the most beautiful moments! 📷",
+                "{name}, {age} years of perfect shots! You're always in focus! 🎥",
+                "You're {age} and every moment with you is worth framing! Say cheese! 📸"
             ],
             fitness: [
                 "Happy {age}th Birthday, {name}! 💪 You've completed {age} years of the ultimate fitness challenge: staying alive!",
                 "Congratulations on turning {age}! Your body might be getting older, but your spirit is still crushing it like a personal trainer! 🏋️",
-                "{name}, you're {age} and still crushing goals. Happy Birthday to the strongest one in the friend group! 🥇"
+                "{name}, you're {age} and still crushing goals. Happy Birthday to the strongest one in the friend group! 🥇",
+                "At {age}, {name}, you're fitter than ever! Age is just reps in the gym of life! 💪",
+                "Happy {age}th Birthday! You've done {age} years of life cardio - you're unstoppable! 🏃",
+                "{name}, {age} years strong! No pain, no gain, and you're all gain! 🔥",
+                "जन्मदिन मुबारक, {name}! {age} साल में भी आप फिट और मजबूत हैं! 💪 (Happy Birthday! Even at {age}, you're fit and strong!)"
             ],
             movies: [
                 "Happy {age}th Birthday, {name}! 🎬 Your life is a blockbuster film, and at {age} chapters in, it's still a page-turner!",
                 "Congratulations on turning {age}! You're like a classic movie - timeless, entertaining, and somehow still relevant after all these years. 🍿",
-                "{name}, you're {age} years old! That's like {age} movies worth of life experience. This year's the director's cut! 🎥"
+                "{name}, you're {age} years old! That's like {age} movies worth of life experience. This year's the director's cut! 🎥",
+                "At {age}, {name}, you deserve an Oscar for best performance in Life! 🏆",
+                "Happy {age}th Birthday! Your life movie is a box office hit at {age}! 🎬",
+                "{name}, {age} years of starring in the greatest show - your life! Lights, camera, action! 🎭",
+                "You're {age} and the main character in the best story ever told! Keep rolling! 🎥"
             ],
             yoga: [
                 "Happy {age}th Birthday, {name}! 🧘 At {age}, you're achieving perfect balance between aging and staying fabulous!",
                 "Congratulations on turning {age}! Your inner peace is showing, but so is your birth certificate. Still beautiful though! ☮️",
-                "{name}, you're {age} and your chakras are definitely aligned for another amazing year. Namaste! 🙏"
+                "{name}, you're {age} and your chakras are definitely aligned for another amazing year. Namaste! 🙏",
+                "At {age}, {name}, you've mastered the warrior pose of life! Stay centered! 🧘",
+                "Happy {age}th Birthday! Your flexibility in handling life at {age} is inspiring! 🙏",
+                "{name}, {age} years of finding zen in the chaos. You're our guru! ☮️",
+                "जन्मदिन की शुभकामनाएं, {name}! {age} साल में आपका योग और संतुलन अद्भुत है! 🧘 (Happy Birthday! Your yoga and balance at {age} is amazing!)"
             ],
             dancing: [
                 "Happy {age}th Birthday, {name}! 💃 You've danced through {age} years of life. Still got the moves!",
                 "Congratulations on turning {age}! You're grooving into this next year like you own the dance floor! 🕺",
-                "{name}, at {age} years old, you're still the life of the party. Let's keep dancing through the decades! 🎉"
+                "{name}, at {age} years old, you're still the life of the party. Let's keep dancing through the decades! 🎉",
+                "At {age}, {name}, your moves are smoother than ever! Keep dancing! 💃",
+                "Happy {age}th Birthday! You've been dancing to life's rhythm for {age} years! 🎶",
+                "{name}, {age} years of bringing joy to the dance floor! You shine! ✨",
+                "You're {age} and still twirling through life with grace and style! 💃"
             ],
             writing: [
                 "Happy {age}th Birthday, {name}! ✍️ You've written {age} chapters of your amazing story. Can't wait for the next one!",
                 "Congratulations on turning {age}! Your autobiography is getting thick, but the best chapters are still to come! 📖",
-                "{name}, you're {age} and still writing the best parts of your story. Happy Birthday to our favorite author! 🖊️"
+                "{name}, you're {age} and still writing the best parts of your story. Happy Birthday to our favorite author! 🖊️",
+                "At {age}, {name}, your life's manuscript is a bestseller! Keep writing! 📝",
+                "Happy {age}th Birthday! Every year you write is pure gold! You're a literary genius at {age}! ✍️",
+                "{name}, {age} years of penning beautiful moments! Your story inspires us! 📖",
+                "You're {age} and your life story gets better with every page! Keep the ink flowing! 🖋️"
             ],
             other: [
                 "Happy {age}th Birthday, {name}! 🎊 You're {age} years old and absolutely crushing it!",
                 "Congratulations on turning {age}! Another year older, another year wiser, another year of being awesome! 🌟",
-                "{name}, you're {age} and you're the best! Happy Birthday to the coolest person we know! 🎈"
+                "{name}, you're {age} and you're the best! Happy Birthday to the coolest person we know! 🎈",
+                "At {age}, {name}, you're more amazing than ever! Cheers to you! 🥳",
+                "Happy {age}th Birthday! Life begins at {age} - and you're living proof! 🎉",
+                "जन्मदिन मुबारक हो, {name}! {age} साल की उम्र में आप शानदार हैं! 🎂 (Happy Birthday! At {age}, you're wonderful!)",
+                "{name}, {age} years of being absolutely incredible! Here's to many more! 🎊"
             ]
         };
 
@@ -913,6 +974,35 @@
             }
             
             document.getElementById('card').classList.add('show');
+            
+            // Trigger confetti animation 🎉
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // Launch confetti from different positions
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+                }));
+            }, 250);
             
             // Scroll to card
             setTimeout(() => {
