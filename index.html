@@ -1190,13 +1190,11 @@
             if (otherVoices.length > 0) {
                 const otherGroup = document.createElement('optgroup');
                 otherGroup.label = 'Other Voices';
-                availableVoices.forEach((voice, index) => {
-                    if (!voice.lang.startsWith('en')) {
-                        const option = document.createElement('option');
-                        option.value = index;
-                        option.textContent = `${voice.name} (${voice.lang})`;
-                        otherGroup.appendChild(option);
-                    }
+                otherVoices.forEach((voice) => {
+                    const option = document.createElement('option');
+                    option.value = availableVoices.indexOf(voice);
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    otherGroup.appendChild(option);
                 });
                 voiceSelect.appendChild(otherGroup);
             }
