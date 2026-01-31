@@ -976,7 +976,7 @@
             <div class="share-buttons">
                 <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
-                <button type="button" class="share-btn copy-url-btn" onclick="copyAppURL(event)">🔗 Copy URL</button>
+                <button type="button" class="share-btn copy-url-btn" onclick="copyAppURL(this)">🔗 Copy URL</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
             </div>
@@ -1534,7 +1534,7 @@
                     logging: false,
                     allowTaint: true,
                     useCORS: true,
-                    imageTimeout: 15000,
+                    imageTimeout: 15000, // 15 seconds - balances preventing indefinite hangs with allowing time for image loading
                     windowWidth: cardContent.scrollWidth,
                     windowHeight: cardContent.scrollHeight
                 });
@@ -1569,15 +1569,15 @@
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
 
-        function copyAppURL(event = null) {
+        function copyAppURL(button = null) {
             const appURL = 'https://renga270122.github.io/Birthday_Card_Generator/';
-            const button = event?.target || document.querySelector('.copy-url-btn');
-            const originalText = button.textContent;
+            const targetButton = button || document.querySelector('.copy-url-btn');
+            const originalText = targetButton.textContent;
             
             navigator.clipboard.writeText(appURL).then(() => {
-                button.textContent = '✅ Copied!';
+                targetButton.textContent = '✅ Copied!';
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    targetButton.textContent = originalText;
                 }, 2000);
             }).catch(() => {
                 // Fallback for older browsers
@@ -1587,9 +1587,9 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                button.textContent = '✅ Copied!';
+                targetButton.textContent = '✅ Copied!';
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    targetButton.textContent = originalText;
                 }, 2000);
             });
         }
