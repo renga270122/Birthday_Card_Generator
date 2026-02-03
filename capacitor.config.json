@@ -1,5 +1,5 @@
 {
-  "appId": "com.soulvest.bdaycard",
+  "appId": "com.soulvest.bdaycard.v2",
   "appName": "Soulvest B'day Card Generator",
   "webDir": "dist",
   "plugins": {
