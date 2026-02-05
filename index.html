@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create hilarious personalized birthday messages instantly with AI-powered Soulvest Birthday Card Generator">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
     <title>Soulvest B'day Card Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -12,9 +16,43 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-gradient-start: #667eea;
+            --bg-gradient-mid: #764ba2;
+            --bg-gradient-end: #f093fb;
+            --container-bg: rgba(255, 255, 255, 0.98);
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --input-bg: rgba(255, 255, 255, 0.8);
+            --input-border: #e1e8ed;
+            --card-bg-start: #fff5e1;
+            --card-bg-end: #ffe8cc;
+            --card-border: #667eea;
+            --error-bg: #ffecec;
+            --error-border: #d63031;
+            --form-section-bg: rgba(102, 126, 234, 0.05);
+        }
+
+        body.dark-mode {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-mid: #16213e;
+            --bg-gradient-end: #0f3460;
+            --container-bg: rgba(30, 30, 46, 0.95);
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --input-bg: rgba(50, 50, 70, 0.8);
+            --input-border: #3a3a5a;
+            --card-bg-start: #2a2a3e;
+            --card-bg-end: #3a3a5e;
+            --card-border: #667eea;
+            --error-bg: #4a2a2a;
+            --error-border: #d63031;
+            --form-section-bg: rgba(102, 126, 234, 0.15);
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,6 +60,7 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
         body::before {
@@ -37,7 +76,7 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.98);
+            background: var(--container-bg);
             border-radius: 30px;
             box-shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
             max-width: 650px;
@@ -47,6 +86,7 @@
             z-index: 1;
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: background 0.5s ease;
         }
 
         .header {
@@ -87,7 +127,7 @@
         }
 
         h1 {
-            color: #2d3436;
+            color: var(--text-primary);
             font-size: 2.8em;
             font-weight: 800;
             margin-bottom: 10px;
@@ -100,7 +140,7 @@
         }
 
         .subtitle {
-            color: #636e72;
+            color: var(--text-secondary);
             font-size: 1em;
             font-weight: 400;
             margin-top: 8px;
@@ -113,7 +153,7 @@
         label {
             display: block;
             margin-bottom: 12px;
-            color: #2d3436;
+            color: var(--text-primary);
             font-weight: 600;
             font-size: 1.05em;
             letter-spacing: 0.3px;
@@ -122,13 +162,13 @@
         input, select {
             width: 100%;
             padding: 14px 18px;
-            border: 2px solid #e1e8ed;
+            border: 2px solid var(--input-border);
             border-radius: 15px;
             font-size: 1em;
             font-family: 'Poppins', sans-serif;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
-            color: #2d3436;
+            background: var(--input-bg);
+            color: var(--text-primary);
         }
 
         .input-with-mic {
@@ -273,13 +313,14 @@
         .card {
             margin-top: 50px;
             padding: 40px;
-            background: linear-gradient(135deg, #fff5e1 0%, #ffe8cc 100%);
+            background: linear-gradient(135deg, var(--card-bg-start) 0%, var(--card-bg-end) 100%);
             border-radius: 25px;
-            border: 3px solid #667eea;
+            border: 3px solid var(--card-border);
             display: none;
             animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
             position: relative;
+            transition: background 0.5s ease;
         }
 
         .card::before {
@@ -308,7 +349,7 @@
 
         .card-message {
             font-size: 1.35em;
-            color: #2d3436;
+            color: var(--text-primary);
             line-height: 1.9;
             text-align: center;
             font-weight: 500;
@@ -333,11 +374,11 @@
             color: #d63031;
             text-align: center;
             padding: 16px;
-            background: #ffecec;
+            background: var(--error-bg);
             border-radius: 15px;
             display: none;
             margin-bottom: 25px;
-            border-left: 4px solid #d63031;
+            border-left: 4px solid var(--error-border);
             font-weight: 500;
             animation: shake 0.4s ease-in-out;
         }
@@ -359,9 +400,47 @@
         }
 
         .form-section {
-            background: rgba(102, 126, 234, 0.05);
+            background: var(--form-section-bg);
             padding: 30px;
             border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        /* Dark mode toggle button */
+        .dark-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
             margin-bottom: 25px;
             border: 2px solid rgba(102, 126, 234, 0.1);
         }
@@ -543,6 +622,16 @@
 
         .email-btn {
             background: linear-gradient(135deg, #ea4335 0%, #c5221f 100%);
+            color: white;
+        }
+
+        .instagram-btn {
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .facebook-btn {
+            background: linear-gradient(135deg, #1877f2 0%, #0c63d4 100%);
             color: white;
         }
 
@@ -824,6 +913,11 @@
     </style>
 </head>
 <body>
+    <!-- Dark mode toggle -->
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+        <span id="darkModeIcon">🌙</span>
+    </div>
+    
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -910,7 +1004,7 @@
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-icon">🖼️</div>
                         <div class="upload-text">Click to upload or drag & drop</div>
-                        <div class="upload-hint">PNG, JPG, GIF up to 5MB</div>
+                        <div class="upload-hint">PNG, JPG, GIF up to 10MB</div>
                     </div>
                     <input type="file" id="imageInput" accept="image/*">
                     <div class="image-preview" id="imagePreview">
@@ -970,17 +1064,61 @@
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
+                <button type="button" class="share-btn instagram-btn" onclick="shareInstagram()">📷 Instagram</button>
+                <button type="button" class="share-btn facebook-btn" onclick="shareFacebook()">👍 Facebook</button>
             </div>
         </div>
     </div>
 
     <footer>
         <p>✨ Made with 💝 by <a href="#" target="_blank">Soulvest</a> | Spreading Joy, One Birthday at a Time 🎉</p>
+        <p id="analyticsCounter" style="margin-top: 10px; font-size: 0.95em; color: #f093fb;">🎉 <span id="cardsCount">0</span> cards created today!</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
         let uploadedImage = null;
+
+        // Dark mode functionality
+        function toggleDarkMode() {
+            const body = document.body;
+            const icon = document.getElementById('darkModeIcon');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                icon.textContent = '☀️';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                icon.textContent = '🌙';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+
+        // Load dark mode preference on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const darkMode = localStorage.getItem('darkMode');
+            const icon = document.getElementById('darkModeIcon');
+            
+            if (darkMode === 'enabled') {
+                document.body.classList.add('dark-mode');
+                icon.textContent = '☀️';
+            }
+        });
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered:', registration);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
 
         // Image upload handling
         const uploadArea = document.getElementById('uploadArea');
@@ -1016,9 +1154,9 @@
         });
 
         function handleImageUpload(file) {
-            // Check file size (5MB max)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File is too large. Please choose an image under 5MB.');
+            // Check file size (10MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File is too large. Please choose an image under 10MB.');
                 return;
             }
 
@@ -1345,77 +1483,137 @@
             gaming: [
                 "Congratulations on leveling up to {age}! 🎮 You're now {age} achievements older, but still no match for my gaming skills!",
                 "Happy {age}th Birthday! You're officially in the {age}+ age bracket... in video games, this means you have {age} special attacks unlocked! ⚔️",
-                "You've successfully completed another year! Achievement unlocked: Turned {age}. Bonus: Not dead yet! 🏆"
+                "You've successfully completed another year! Achievement unlocked: Turned {age}. Bonus: Not dead yet! 🏆",
+                "{name}, at {age}, you've got more experience points than anyone! Keep grinding through life! 🎮",
+                "Happy {age}th Birthday, {name}! Your life's save file just got {age} years richer! Time for the next quest! 🏰",
+                "जन्मदिन मुबारक हो, {name}! आप {age} साल के हो गए। गेमिंग की तरह, जीवन में भी आप हमेशा विजेता रहें! 🎯 (Happy Birthday! You're {age}. Like in gaming, may you always be a winner in life!)",
+                "{name}, you've reached level {age}! Boss battles? Bring 'em on! You're unstoppable! 👾"
             ],
             reading: [
                 "Happy {age}th Birthday, {name}! 📖 You've been aging at chapter {age} of your life's great novel. Can't wait to read the next chapter!",
                 "Congratulations on turning {age}! You're like a book that keeps getting more interesting. And unlike most books, you don't have an expiration date (yet).",
-                "{name}, you're now {age} years old. That's {age} years of plotlines, character development, and plot twists. Best story ever! 📚"
+                "{name}, you're now {age} years old. That's {age} years of plotlines, character development, and plot twists. Best story ever! 📚",
+                "At {age}, {name}, you're a bestseller! Each year adds another fascinating chapter to your story. 📕",
+                "Happy {age}th Birthday! Your life is poetry in motion, and {age} verses in, it's a masterpiece! ✍️",
+                "जन्मदिन की शुभकामनाएं, {name}! {age} साल की उम्र में, आपकी जीवन कहानी बेहतरीन है! 📚 (Happy Birthday! At {age}, your life story is amazing!)",
+                "{name}, {age} years of wisdom written in the book of life. What a beautiful read! 📖"
             ],
             cooking: [
                 "Happy {age}th Birthday, {name}! 👨‍🍳 You're aging like fine wine... or a well-marinated steak at {age} years old!",
                 "Congratulations on turning {age}! You're getting older, but at least you know how to season your life perfectly. 🧂",
-                "{name}, you're now {age} and getting spicier with age! Happy Birthday to the finest ingredient in the recipe of life! 🌶️"
+                "{name}, you're now {age} and getting spicier with age! Happy Birthday to the finest ingredient in the recipe of life! 🌶️",
+                "At {age}, you're perfectly cooked - not too raw, not overdone. Just chef's kiss! 👨‍🍳",
+                "Happy {age}th Birthday! Like a master chef, you've perfected the recipe for an amazing life! 🍰",
+                "{name}, you're {age} and more delicious than a 5-star meal! Keep cooking up happiness! 🍳",
+                "जन्मदिन मुबारक, {name}! {age} साल की उम्र में आप जीवन का सबसे अच्छा व्यंजन हैं! 🎂 (Happy Birthday! At {age}, you're life's best dish!)"
             ],
             sports: [
                 "Happy {age}th Birthday, {name}! ⚽ You've completed {age} laps around the sun. That's like running a marathon... but without leaving Earth!",
                 "Congratulations on turning {age}! You're now officially in your prime athletic years... to go professional in sitting on the couch. 🛋️",
-                "{name}, at {age} years old, you're still a champion in our hearts. Even if you're more of a cheerleader these days! 🏆"
+                "{name}, at {age} years old, you're still a champion in our hearts. Even if you're more of a cheerleader these days! 🏆",
+                "Happy {age}th Birthday! You're scoring goals in life like a true MVP at {age}! ⚽",
+                "{name}, {age} years of playing the game of life - and you're winning! 🥇",
+                "At {age}, you're still in top form! Age is just a number on your jersey! 🏅",
+                "जन्मदिन की बधाई, {name}! {age} साल में भी आप एक चैंपियन हैं! 🏆 (Happy Birthday! Even at {age}, you're a champion!)"
             ],
             music: [
                 "Happy {age}th Birthday, {name}! 🎵 You're now {age} years old - that's {age} years of questionable music taste and we still love you!",
                 "Congratulations on turning {age}! Your life is a beautiful symphony, and you're conducting it like the maestro you are. 🎼",
-                "{name}, you're now {age}! That's {age} years of hitting the right notes (and missing some too, but we won't judge)! 🎤"
+                "{name}, you're now {age}! That's {age} years of hitting the right notes (and missing some too, but we won't judge)! 🎤",
+                "At {age}, {name}, your life's melody is more beautiful than ever! Keep composing magic! 🎶",
+                "Happy {age}th Birthday! You're the rockstar of our lives, hitting high notes at {age}! 🎸",
+                "{name}, {age} years of making beautiful music with your life! Encore! 👏",
+                "जन्मदिन मुबारक, {name}! {age} साल की उम्र में, आपका जीवन संगीत सबसे मधुर है! 🎵 (Happy Birthday! At {age}, your life's music is most melodious!)"
             ],
             art: [
                 "Happy {age}th Birthday, {name}! 🎨 You're a masterpiece at {age} years old - slightly aged, but still appreciated!",
                 "Congratulations on turning {age}! Your life is a work of art, and at {age}, you're definitely in the 'vintage' category now. 🖼️",
-                "{name}, you're {age} and absolutely breathtaking! Happy Birthday to our favorite canvas of memories! 🌈"
+                "{name}, you're {age} and absolutely breathtaking! Happy Birthday to our favorite canvas of memories! 🌈",
+                "At {age}, {name}, you're a timeless piece of art - valuable and beautiful! 🎨",
+                "Happy {age}th Birthday! Every year adds another brushstroke to your masterpiece! 🖌️",
+                "{name}, {age} years of creating beauty in this world. You're our Picasso! 🎨",
+                "You're {age} and still painting life with the brightest colors! Keep creating magic! 🌟"
             ],
             travel: [
                 "Happy {age}th Birthday, {name}! ✈️ You've traveled {age} years around the sun. Next stop: {age}+1!",
                 "Congratulations on turning {age}! You're now another year older and hopefully {age} times wiser. Or at least {age} times more lost! 🗺️",
-                "{name}, at {age} years old, you're on the world's best journey. Thanks for letting us be your travel companions! 🌍"
+                "{name}, at {age} years old, you're on the world's best journey. Thanks for letting us be your travel companions! 🌍",
+                "Happy {age}th Birthday! Your passport of life has {age} amazing stamps! More adventures await! 🛫",
+                "{name}, at {age}, you've explored more of life than most! Keep wandering! 🗺️",
+                "Life's journey at {age} is your best trip yet, {name}! Bon voyage to another year! 🌏",
+                "जन्मदिन मुबारक, {name}! {age} साल की यात्रा में, आपने जीवन के सुंदर पल देखे हैं! ✈️ (Happy Birthday! In {age} years of journey, you've seen beautiful moments!)"
             ],
             gardening: [
                 "Happy {age}th Birthday, {name}! 🌱 You've been growing beautifully for {age} years. Here's to planting more seeds of wisdom!",
                 "Congratulations on turning {age}! Like a well-maintained garden, you're aging gracefully - just with a few more weeds. 🌻",
-                "{name}, you're now {age}! That's {age} years of blooming, growing, and occasionally being a little thorny. We love it! 🌹"
+                "{name}, you're now {age}! That's {age} years of blooming, growing, and occasionally being a little thorny. We love it! 🌹",
+                "At {age}, {name}, you're in full bloom! Your garden of life is magnificent! 🌺",
+                "Happy {age}th Birthday! You've cultivated {age} years of beauty and wisdom! 🌸",
+                "{name}, like a perennial flower, you come back more beautiful each year at {age}! 🌼",
+                "You're {age} and still growing strong! Your roots run deep, your flowers bloom bright! 🌷"
             ],
             photography: [
                 "Happy {age}th Birthday, {name}! 📷 You're {age} years old and still the most beautiful frame in our collection!",
                 "Congratulations on turning {age}! Life is like photography - you develop it in the dark. You've had {age} very dark years, apparently! 📸",
-                "{name}, at {age} years old, you're officially vintage film material. Happy Birthday to our favorite subject! 🎬"
+                "{name}, at {age} years old, you're officially vintage film material. Happy Birthday to our favorite subject! 🎬",
+                "At {age}, {name}, you're picture perfect! Every angle is your best angle! 📸",
+                "Happy {age}th Birthday! Your life at {age} is captured in the most beautiful moments! 📷",
+                "{name}, {age} years of perfect shots! You're always in focus! 🎥",
+                "You're {age} and every moment with you is worth framing! Say cheese! 📸"
             ],
             fitness: [
                 "Happy {age}th Birthday, {name}! 💪 You've completed {age} years of the ultimate fitness challenge: staying alive!",
                 "Congratulations on turning {age}! Your body might be getting older, but your spirit is still crushing it like a personal trainer! 🏋️",
-                "{name}, you're {age} and still crushing goals. Happy Birthday to the strongest one in the friend group! 🥇"
+                "{name}, you're {age} and still crushing goals. Happy Birthday to the strongest one in the friend group! 🥇",
+                "At {age}, {name}, you're fitter than ever! Age is just reps in the gym of life! 💪",
+                "Happy {age}th Birthday! You've done {age} years of life cardio - you're unstoppable! 🏃",
+                "{name}, {age} years strong! No pain, no gain, and you're all gain! 🔥",
+                "जन्मदिन मुबारक, {name}! {age} साल में भी आप फिट और मजबूत हैं! 💪 (Happy Birthday! Even at {age}, you're fit and strong!)"
             ],
             movies: [
                 "Happy {age}th Birthday, {name}! 🎬 Your life is a blockbuster film, and at {age} chapters in, it's still a page-turner!",
                 "Congratulations on turning {age}! You're like a classic movie - timeless, entertaining, and somehow still relevant after all these years. 🍿",
-                "{name}, you're {age} years old! That's like {age} movies worth of life experience. This year's the director's cut! 🎥"
+                "{name}, you're {age} years old! That's like {age} movies worth of life experience. This year's the director's cut! 🎥",
+                "At {age}, {name}, you deserve an Oscar for best performance in Life! 🏆",
+                "Happy {age}th Birthday! Your life movie is a box office hit at {age}! 🎬",
+                "{name}, {age} years of starring in the greatest show - your life! Lights, camera, action! 🎭",
+                "You're {age} and the main character in the best story ever told! Keep rolling! 🎥"
             ],
             yoga: [
                 "Happy {age}th Birthday, {name}! 🧘 At {age}, you're achieving perfect balance between aging and staying fabulous!",
                 "Congratulations on turning {age}! Your inner peace is showing, but so is your birth certificate. Still beautiful though! ☮️",
-                "{name}, you're {age} and your chakras are definitely aligned for another amazing year. Namaste! 🙏"
+                "{name}, you're {age} and your chakras are definitely aligned for another amazing year. Namaste! 🙏",
+                "At {age}, {name}, you've mastered the warrior pose of life! Stay centered! 🧘",
+                "Happy {age}th Birthday! Your flexibility in handling life at {age} is inspiring! 🙏",
+                "{name}, {age} years of finding zen in the chaos. You're our guru! ☮️",
+                "जन्मदिन की शुभकामनाएं, {name}! {age} साल में आपका योग और संतुलन अद्भुत है! 🧘 (Happy Birthday! Your yoga and balance at {age} is amazing!)"
             ],
             dancing: [
                 "Happy {age}th Birthday, {name}! 💃 You've danced through {age} years of life. Still got the moves!",
                 "Congratulations on turning {age}! You're grooving into this next year like you own the dance floor! 🕺",
-                "{name}, at {age} years old, you're still the life of the party. Let's keep dancing through the decades! 🎉"
+                "{name}, at {age} years old, you're still the life of the party. Let's keep dancing through the decades! 🎉",
+                "At {age}, {name}, your moves are smoother than ever! Keep dancing! 💃",
+                "Happy {age}th Birthday! You've been dancing to life's rhythm for {age} years! 🎶",
+                "{name}, {age} years of bringing joy to the dance floor! You shine! ✨",
+                "You're {age} and still twirling through life with grace and style! 💃"
             ],
             writing: [
                 "Happy {age}th Birthday, {name}! ✍️ You've written {age} chapters of your amazing story. Can't wait for the next one!",
                 "Congratulations on turning {age}! Your autobiography is getting thick, but the best chapters are still to come! 📖",
-                "{name}, you're {age} and still writing the best parts of your story. Happy Birthday to our favorite author! 🖊️"
+                "{name}, you're {age} and still writing the best parts of your story. Happy Birthday to our favorite author! 🖊️",
+                "At {age}, {name}, your life's manuscript is a bestseller! Keep writing! 📝",
+                "Happy {age}th Birthday! Every year you write is pure gold! You're a literary genius at {age}! ✍️",
+                "{name}, {age} years of penning beautiful moments! Your story inspires us! 📖",
+                "You're {age} and your life story gets better with every page! Keep the ink flowing! 🖋️"
             ],
             other: [
                 "Happy {age}th Birthday, {name}! 🎊 You're {age} years old and absolutely crushing it!",
                 "Congratulations on turning {age}! Another year older, another year wiser, another year of being awesome! 🌟",
-                "{name}, you're {age} and you're the best! Happy Birthday to the coolest person we know! 🎈"
+                "{name}, you're {age} and you're the best! Happy Birthday to the coolest person we know! 🎈",
+                "At {age}, {name}, you're more amazing than ever! Cheers to you! 🥳",
+                "Happy {age}th Birthday! Life begins at {age} - and you're living proof! 🎉",
+                "जन्मदिन मुबारक हो, {name}! {age} साल की उम्र में आप शानदार हैं! 🎂 (Happy Birthday! At {age}, you're wonderful!)",
+                "{name}, {age} years of being absolutely incredible! Here's to many more! 🎊"
             ]
         };
 
@@ -1480,6 +1678,48 @@
             
             document.getElementById('card').classList.add('show');
             
+            // Update analytics counter
+            updateAnalyticsCounter();
+            
+            // Save to history
+            saveToHistory({
+                name,
+                age,
+                hobby,
+                message: finalMessage,
+                image: uploadedImage,
+                timestamp: Date.now()
+            });
+            
+            // Trigger confetti animation 🎉
+            const duration = 3 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+                const timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                const particleCount = 50 * (timeLeft / duration);
+                
+                // Launch confetti from different positions
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } 
+                }));
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } 
+                }));
+            }, 250);
+            
             // Scroll to card
             setTimeout(() => {
                 document.getElementById('card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1521,7 +1761,7 @@
             try {
                 const canvas = await html2canvas(card, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: 4,
                     logging: false,
                     allowTaint: true,
                     useCORS: true
@@ -1552,20 +1792,158 @@
             const personName = document.getElementById('name').value;
             const message = document.getElementById('cardMessage').textContent;
             
-            // For WhatsApp Web
+            // Try to use Web Share API if available (supports images on mobile)
+            if (navigator.share) {
+                try {
+                    const card = document.getElementById('card');
+                    const canvas = await html2canvas(card, {
+                        backgroundColor: '#fff',
+                        scale: 2,
+                        logging: false,
+                        allowTaint: true,
+                        useCORS: true
+                    });
+                    
+                    canvas.toBlob(async (blob) => {
+                        const file = new File([blob], `birthday-card-${personName}.png`, { type: 'image/png' });
+                        const shareData = {
+                            title: `🎉 Happy Birthday ${personName}!`,
+                            text: message,
+                            files: [file]
+                        };
+                        
+                        if (navigator.canShare && navigator.canShare(shareData)) {
+                            await navigator.share(shareData);
+                            return;
+                        }
+                    });
+                } catch (error) {
+                    console.log('Web Share API failed, falling back to WhatsApp Web');
+                }
+            }
+            
+            // Fallback for WhatsApp Web
             const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
             window.open(`https://wa.me/?text=${text}`, '_blank');
         }
 
-        function shareEmail() {
+        async function shareEmail() {
             const personName = document.getElementById('name').value;
             const message = document.getElementById('cardMessage').textContent;
             
             const subject = encodeURIComponent(`🎉 Happy Birthday ${personName}!`);
-            const body = encodeURIComponent(`Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂`);
+            const body = encodeURIComponent(`Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂\n\nDownload the card image and attach it to this email for the complete experience!`);
             
             window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
         }
+
+        async function shareInstagram() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            
+            alert('📷 To share on Instagram:\n\nThe card image will be downloaded automatically. Then:\n\n1. Open Instagram app\n2. Create a new post or story\n3. Upload the downloaded image\n4. Add your caption and share!');
+            
+            // Automatically trigger download
+            await downloadCard();
+        }
+
+        async function shareFacebook() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            
+            // Facebook sharing with text (image would require FB app integration)
+            const text = encodeURIComponent(`🎉 Happy Birthday ${personName}! 🎂\n\n${message}\n\n✨ Created with Soulvest B'day Card Generator`);
+            const url = encodeURIComponent(window.location.href);
+            
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank', 'width=600,height=400');
+        }
+
+        // Analytics counter functions
+        function updateAnalyticsCounter() {
+            const today = new Date().toDateString();
+            let analytics = JSON.parse(localStorage.getItem('cardAnalytics') || '{}');
+            
+            // Reset counter if it's a new day
+            if (analytics.date !== today) {
+                analytics = {
+                    date: today,
+                    count: 0
+                };
+            }
+            
+            // Increment counter
+            analytics.count++;
+            localStorage.setItem('cardAnalytics', JSON.stringify(analytics));
+            
+            // Update display
+            document.getElementById('cardsCount').textContent = analytics.count;
+        }
+
+        // Load analytics counter on page load
+        function loadAnalyticsCounter() {
+            const today = new Date().toDateString();
+            let analytics = JSON.parse(localStorage.getItem('cardAnalytics') || '{}');
+            
+            // Reset if new day
+            if (analytics.date !== today) {
+                analytics = {
+                    date: today,
+                    count: 0
+                };
+                localStorage.setItem('cardAnalytics', JSON.stringify(analytics));
+            }
+            
+            document.getElementById('cardsCount').textContent = analytics.count;
+        }
+
+        // Card history functions
+        function saveToHistory(cardData) {
+            let history = JSON.parse(localStorage.getItem('cardHistory') || '[]');
+            
+            // Add to beginning of array
+            history.unshift(cardData);
+            
+            // Keep only last 10 cards
+            if (history.length > 10) {
+                history = history.slice(0, 10);
+            }
+            
+            localStorage.setItem('cardHistory', JSON.stringify(history));
+        }
+
+        function getHistory() {
+            return JSON.parse(localStorage.getItem('cardHistory') || '[]');
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('cardHistory');
+            alert('History cleared successfully!');
+        }
+
+        // Favorites functions
+        function saveToFavorites(cardData) {
+            let favorites = JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+            
+            // Add to favorites with unique ID
+            cardData.id = Date.now();
+            favorites.push(cardData);
+            
+            localStorage.setItem('cardFavorites', JSON.stringify(favorites));
+            alert('⭐ Card saved to favorites!');
+        }
+
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+        }
+
+        function removeFromFavorites(id) {
+            let favorites = JSON.parse(localStorage.getItem('cardFavorites') || '[]');
+            favorites = favorites.filter(card => card.id !== id);
+            localStorage.setItem('cardFavorites', JSON.stringify(favorites));
+        }
+
+        // Initialize analytics counter on page load
+        window.addEventListener('DOMContentLoaded', loadAnalyticsCounter);
     </script>
 </body>
 </html>
