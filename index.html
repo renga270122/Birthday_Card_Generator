@@ -546,6 +546,16 @@
             color: white;
         }
 
+        .instagram-btn {
+            background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .facebook-btn {
+            background: linear-gradient(135deg, #4267B2 0%, #2e4a86 100%);
+            color: white;
+        }
+
         .share-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -910,7 +920,7 @@
                     <div class="upload-area" id="uploadArea">
                         <div class="upload-icon">🖼️</div>
                         <div class="upload-text">Click to upload or drag & drop</div>
-                        <div class="upload-hint">PNG, JPG, GIF up to 5MB</div>
+                        <div class="upload-hint">PNG, JPG, GIF up to 10MB</div>
                     </div>
                     <input type="file" id="imageInput" accept="image/*">
                     <div class="image-preview" id="imagePreview">
@@ -970,6 +980,8 @@
                 <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
+                <button type="button" class="share-btn instagram-btn" onclick="shareInstagram()" aria-label="Share on Instagram">📷 Instagram</button>
+                <button type="button" class="share-btn facebook-btn" onclick="shareFacebook()" aria-label="Share on Facebook">👍 Facebook</button>
             </div>
         </div>
     </div>
@@ -980,7 +992,17 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
+        // Image quality constants
+        const DOWNLOAD_IMAGE_SCALE = 4; // High quality for downloads
+        const SHARE_IMAGE_SCALE = 2;    // Balanced quality/performance for sharing
+        
         let uploadedImage = null;
+
+        // Helper function to sanitize filename
+        function sanitizeFilename(filename) {
+            const sanitized = filename.replace(/[^a-z0-9-_]/gi, '-').replace(/-+/g, '-').substring(0, 50);
+            return sanitized || 'birthday-card';
+        }
 
         // Image upload handling
         const uploadArea = document.getElementById('uploadArea');
@@ -1016,9 +1038,9 @@
         });
 
         function handleImageUpload(file) {
-            // Check file size (5MB max)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File is too large. Please choose an image under 5MB.');
+            // Check file size (10MB max)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File is too large. Please choose an image under 10MB.');
                 return;
             }
 
@@ -1521,7 +1543,7 @@
             try {
                 const canvas = await html2canvas(card, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: DOWNLOAD_IMAGE_SCALE,
                     logging: false,
                     allowTaint: true,
                     useCORS: true
@@ -1529,8 +1551,9 @@
 
                 const link = document.createElement('a');
                 const personName = document.getElementById('name').value || 'birthday';
+                const safeName = sanitizeFilename(personName);
                 link.href = canvas.toDataURL('image/png');
-                link.download = `Soulvest-Birthday-Card-${personName}.png`;
+                link.download = `Soulvest-Birthday-Card-${safeName}.png`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1551,20 +1574,208 @@
         async function shareWhatsApp() {
             const personName = document.getElementById('name').value;
             const message = document.getElementById('cardMessage').textContent;
+            const card = document.getElementById('card');
             
-            // For WhatsApp Web
-            const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
-            window.open(`https://wa.me/?text=${text}`, '_blank');
+            // Try to generate and share image with Web Share API
+            if (navigator.share && uploadedImage) {
+                try {
+                    const canvas = await html2canvas(card, {
+                        backgroundColor: '#fff',
+                        scale: SHARE_IMAGE_SCALE,
+                        logging: false,
+                        allowTaint: true,
+                        useCORS: true
+                    });
+                    
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) {
+                            console.error('Failed to generate image blob');
+                            const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
+                            window.open(`https://wa.me/?text=${text}`, '_blank');
+                            return;
+                        }
+                        
+                        const safeName = sanitizeFilename(personName);
+                        const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
+                        const shareText = `🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`;
+                        
+                        try {
+                            await navigator.share({
+                                text: shareText,
+                                files: [file]
+                            });
+                        } catch (err) {
+                            // Fall back to text-only sharing
+                            const text = encodeURIComponent(shareText);
+                            window.open(`https://wa.me/?text=${text}`, '_blank');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    // Fall back to text-only sharing
+                    const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
+                    window.open(`https://wa.me/?text=${text}`, '_blank');
+                }
+            } else {
+                // For WhatsApp Web (text only)
+                const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
+                window.open(`https://wa.me/?text=${text}`, '_blank');
+            }
         }
 
-        function shareEmail() {
+        async function shareEmail() {
             const personName = document.getElementById('name').value;
             const message = document.getElementById('cardMessage').textContent;
+            const card = document.getElementById('card');
             
-            const subject = encodeURIComponent(`🎉 Happy Birthday ${personName}!`);
-            const body = encodeURIComponent(`Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂`);
+            const subject = `🎉 Happy Birthday ${personName}!`;
+            const body = `Dear ${personName},\n\n${message}\n\nWith warm wishes! 💝\n\nP.S. This card was created with Soulvest B'day Card Generator 🎂`;
             
-            window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+            // Try to use Web Share API with image if available
+            if (navigator.share && uploadedImage) {
+                try {
+                    const canvas = await html2canvas(card, {
+                        backgroundColor: '#fff',
+                        scale: SHARE_IMAGE_SCALE,
+                        logging: false,
+                        allowTaint: true,
+                        useCORS: true
+                    });
+                    
+                    canvas.toBlob(async (blob) => {
+                        if (!blob) {
+                            console.error('Failed to generate image blob');
+                            const encodedSubject = encodeURIComponent(subject);
+                            const encodedBody = encodeURIComponent(body);
+                            window.open(`mailto:?subject=${encodedSubject}&body=${encodedBody}`, '_blank');
+                            return;
+                        }
+                        
+                        const safeName = sanitizeFilename(personName);
+                        const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
+                        
+                        try {
+                            await navigator.share({
+                                title: subject,
+                                text: body,
+                                files: [file]
+                            });
+                        } catch (err) {
+                            // Fall back to mailto
+                            const encodedSubject = encodeURIComponent(subject);
+                            const encodedBody = encodeURIComponent(body);
+                            window.open(`mailto:?subject=${encodedSubject}&body=${encodedBody}`, '_blank');
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error sharing:', error);
+                    // Fall back to mailto
+                    const encodedSubject = encodeURIComponent(subject);
+                    const encodedBody = encodeURIComponent(body);
+                    window.open(`mailto:?subject=${encodedSubject}&body=${encodedBody}`, '_blank');
+                }
+            } else {
+                // Fall back to mailto (text only)
+                const encodedSubject = encodeURIComponent(subject);
+                const encodedBody = encodeURIComponent(body);
+                window.open(`mailto:?subject=${encodedSubject}&body=${encodedBody}`, '_blank');
+            }
+        }
+
+        async function shareInstagram() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            const card = document.getElementById('card');
+            
+            try {
+                // Generate the card image
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#fff',
+                    scale: SHARE_IMAGE_SCALE,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                });
+                
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        console.error('Failed to generate image blob');
+                        alert('Error generating image. Please try the Download button instead.');
+                        return;
+                    }
+                    
+                    const safeName = sanitizeFilename(personName);
+                    const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
+                    
+                    // Try Web Share API (works on mobile)
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                text: `🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`,
+                                files: [file]
+                            });
+                        } catch (err) {
+                            alert('Please download the image and share it manually on Instagram.');
+                        }
+                    } else {
+                        alert('Please download the image using the Download button and share it manually on Instagram.');
+                    }
+                });
+            } catch (error) {
+                console.error('Error generating image:', error);
+                alert('Error generating image. Please try the Download button instead.');
+            }
+        }
+
+        async function shareFacebook() {
+            const personName = document.getElementById('name').value;
+            const message = document.getElementById('cardMessage').textContent;
+            const card = document.getElementById('card');
+            
+            try {
+                // Generate the card image
+                const canvas = await html2canvas(card, {
+                    backgroundColor: '#fff',
+                    scale: SHARE_IMAGE_SCALE,
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                });
+                
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        console.error('Failed to generate image blob');
+                        const shareText = encodeURIComponent(`🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`);
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`, '_blank');
+                        return;
+                    }
+                    
+                    const safeName = sanitizeFilename(personName);
+                    const file = new File([blob], `birthday-card-${safeName}.png`, { type: 'image/png' });
+                    
+                    // Try Web Share API (works on mobile)
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                text: `🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`,
+                                files: [file]
+                            });
+                        } catch (err) {
+                            // Fall back to Facebook sharer (text only)
+                            const shareText = encodeURIComponent(`🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`);
+                            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`, '_blank');
+                        }
+                    } else {
+                        // Fall back to Facebook sharer (text only)
+                        const shareText = encodeURIComponent(`🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`);
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`, '_blank');
+                    }
+                });
+            } catch (error) {
+                console.error('Error generating image:', error);
+                const shareText = encodeURIComponent(`🎉 ${message}\n\n✨ Created with Soulvest B'day Card Generator`);
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`, '_blank');
+            }
         }
     </script>
 </body>
