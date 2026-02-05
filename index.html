@@ -546,6 +546,11 @@
             color: white;
         }
 
+        .copy-url-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
         .share-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -927,10 +932,13 @@
         </form>
 
         <div class="card" id="card">
-            <div class="card-decoration">🎂 ✨ 🎉</div>
-            <div class="card-image" id="cardImage"></div>
-            <div class="card-message" id="cardMessage"></div>
-            <div class="card-decoration">🎈 💝 🎊</div>
+            <!-- Card Content Wrapper for Download -->
+            <div id="cardContent">
+                <div class="card-decoration">🎂 ✨ 🎉</div>
+                <div class="card-image" id="cardImage"></div>
+                <div class="card-message" id="cardMessage"></div>
+                <div class="card-decoration">🎈 💝 🎊</div>
+            </div>
             
             <!-- Audio Controls -->
             <div class="audio-controls">
@@ -966,8 +974,9 @@
             </div>
             
             <div class="share-buttons">
-                <button type="button" class="share-btn copy-btn" onclick="copyToClipboard()">📋 Copy</button>
-                <button type="button" class="share-btn download-btn" onclick="downloadCard()">⬇️ Download</button>
+                <button type="button" class="share-btn copy-btn" onclick="copyToClipboard(this)">📋 Copy</button>
+                <button type="button" class="share-btn download-btn" onclick="downloadCard(this)">⬇️ Download</button>
+                <button type="button" class="share-btn copy-url-btn" onclick="copyAppURL(this)">🔗 Copy URL</button>
                 <button type="button" class="share-btn whatsapp-btn" onclick="shareWhatsApp()">💬 WhatsApp</button>
                 <button type="button" class="share-btn email-btn" onclick="shareEmail()">✉️ Email</button>
             </div>
@@ -1486,45 +1495,57 @@
             }, 100);
         }
 
-        function copyToClipboard() {
+        function copyToClipboard(button = null) {
             const message = document.getElementById('cardMessage').textContent;
+            const targetButton = button || document.querySelector('.copy-btn');
+            const originalText = targetButton.textContent;
+            
             navigator.clipboard.writeText(message).then(() => {
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = '✅ Copied!';
+                targetButton.textContent = '✅ Copied!';
                 setTimeout(() => {
-                    button.textContent = originalText;
+                    targetButton.textContent = originalText;
                 }, 2000);
-            }).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = message;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = '✅ Copied!';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
+            }).catch((err) => {
+                // Fallback for older browsers using deprecated API
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = message;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (success) {
+                        targetButton.textContent = '✅ Copied!';
+                        setTimeout(() => {
+                            targetButton.textContent = originalText;
+                        }, 2000);
+                    } else {
+                        alert('Unable to copy message. Please copy manually.');
+                    }
+                } catch (fallbackErr) {
+                    alert('Unable to copy message. Please copy manually.');
+                }
             });
         }
 
-        async function downloadCard() {
-            const card = document.getElementById('card');
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = '⏳ Generating...';
-            button.disabled = true;
+        async function downloadCard(button = null) {
+            const cardContent = document.getElementById('cardContent');
+            const targetButton = button || document.querySelector('.download-btn');
+            const originalText = targetButton.textContent;
+            targetButton.textContent = '⏳ Generating...';
+            targetButton.disabled = true;
 
             try {
-                const canvas = await html2canvas(card, {
+                const canvas = await html2canvas(cardContent, {
                     backgroundColor: '#fff',
-                    scale: 2,
+                    scale: 3,
                     logging: false,
                     allowTaint: true,
-                    useCORS: true
+                    useCORS: true,
+                    imageTimeout: 15000, // 15 seconds - images that fail to load within this timeout will be skipped
+                    windowWidth: cardContent.scrollWidth,
+                    windowHeight: cardContent.scrollHeight
                 });
 
                 const link = document.createElement('a');
@@ -1535,16 +1556,16 @@
                 link.click();
                 document.body.removeChild(link);
 
-                button.textContent = '✅ Downloaded!';
+                targetButton.textContent = '✅ Downloaded!';
                 setTimeout(() => {
-                    button.textContent = originalText;
-                    button.disabled = false;
+                    targetButton.textContent = originalText;
+                    targetButton.disabled = false;
                 }, 2000);
             } catch (error) {
                 console.error('Error generating image:', error);
                 alert('Error downloading card. Please try again.');
-                button.textContent = originalText;
-                button.disabled = false;
+                targetButton.textContent = originalText;
+                targetButton.disabled = false;
             }
         }
 
@@ -1555,6 +1576,40 @@
             // For WhatsApp Web
             const text = encodeURIComponent(`🎉 Hey! Check out this birthday message:\n\n"${message}"\n\n✨ Created with Soulvest B'day Card Generator`);
             window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+
+        function copyAppURL(button = null) {
+            const appURL = 'https://renga270122.github.io/Birthday_Card_Generator/';
+            const targetButton = button || document.querySelector('.copy-url-btn');
+            const originalText = targetButton.textContent;
+            
+            navigator.clipboard.writeText(appURL).then(() => {
+                targetButton.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    targetButton.textContent = originalText;
+                }, 2000);
+            }).catch((err) => {
+                // Fallback for older browsers using deprecated API
+                try {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = appURL;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    const success = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (success) {
+                        targetButton.textContent = '✅ Copied!';
+                        setTimeout(() => {
+                            targetButton.textContent = originalText;
+                        }, 2000);
+                    } else {
+                        alert('Unable to copy URL. Please copy manually: ' + appURL);
+                    }
+                } catch (fallbackErr) {
+                    alert('Unable to copy URL. Please copy manually: ' + appURL);
+                }
+            });
         }
 
         function shareEmail() {
